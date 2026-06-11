@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NoorAI — All Screens</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green:       #1B4D3E;
+    --green-hover: #2A6B57;
+    --gold:        #C9A84C;
+    --gold-light:  #E0C170;
+    --bg:          #FAFAF8;
+    --bg-card:     #FFFFFF;
+    --border:      #E5E7EB;
+    --text-primary:#111827;
+    --text-muted:  #6B7280;
+    --text-light:  #9CA3AF;
+    --red:         #EF4444;
+    --radius-sm:   6px;
+    --radius-md:   10px;
+    --radius-lg:   14px;
+    --radius-xl:   20px;
+    --shadow:      0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md:   0 4px 12px rgba(0,0,0,0.10);
+  }
+
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    background: #E5E7EB;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+  }
+
+  /* ─── SCREEN WRAPPER ─── */
+  .screen-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 12px;
+  }
+
+  .screen {
+    width: 1440px;
+    min-height: 900px;
+    background: var(--bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  /* ─── SHARED NAV ─── */
+  .topnav {
+    height: 64px;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    gap: 12px;
+    position: relative;
+    z-index: 10;
+  }
+  .topnav-logo {
+    width: 36px; height: 36px;
+    background: rgba(201,168,76,.2);
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .topnav-name {
+    font-size: 18px; font-weight: 700; color: #fff;
+    letter-spacing: -.3px;
+  }
+  .topnav-arabic {
+    font-family: 'Noto Sans Arabic', sans-serif;
+    font-size: 13px; color: var(--gold); margin-left: 4px;
+  }
+  .topnav-links {
+    display: flex; gap: 4px; margin-left: 32px;
+  }
+  .topnav-link {
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px; color: rgba(255,255,255,.75);
+    cursor: pointer; transition: background .15s;
+  }
+  .topnav-link:hover { background: rgba(255,255,255,.1); }
+  .topnav-link.active { background: rgba(255,255,255,.15); color: #fff; font-weight: 600; }
+  .topnav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .topnav-icon {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+  }
+  .topnav-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #3a2800;
+  }
+
+  /* ─── SHARED BUTTONS ─── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; border: none; cursor: pointer;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 600; border-radius: var(--radius-md);
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: .9; }
+  .btn-primary { background: var(--green); color: #fff; }
+  .btn-gold { background: var(--gold); color: #3a2800; }
+  .btn-outline {
+    background: transparent; color: var(--green);
+    border: 1.5px solid var(--green);
+  }
+  .btn-ghost {
+    background: rgba(27,77,62,.08); color: var(--green);
+  }
+  .btn-lg { height: 52px; padding: 0 28px; font-size: 16px; }
+  .btn-md { height: 44px; padding: 0 22px; font-size: 14px; }
+  .btn-sm { height: 36px; padding: 0 16px; font-size: 13px; }
+  .btn-full { width: 100%; }
+
+  /* ─── SHARED INPUTS ─── */
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .field input, .field select, .field textarea {
+    height: 48px; padding: 0 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-md);
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 15px; color: var(--text-primary);
+    background: #fff; outline: none;
+    transition: border-color .15s;
+  }
+  .field input:focus { border-color: var(--green); }
+  .field input::placeholder { color: var(--text-light); }
+  .field textarea { height: 100px; padding: 12px 16px; resize: none; }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  /* ─── BADGE ─── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+  }
+  .badge-green { background: #D1FAE5; color: #065F46; }
+  .badge-gold  { background: #FEF3C7; color: #92400E; }
+  .badge-red   { background: #FEE2E2; color: #991B1B; }
+  .badge-gray  { background: #F3F4F6; color: #374151; }
+
+  /* ══════════════════════════════════════════
+     SCREEN 1 — LOGIN
+  ══════════════════════════════════════════ */
+  .login-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 900px;
+  }
+  .login-left {
+    background: var(--green);
+    padding: 60px 64px;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+  }
+  .login-left::before {
+    content: '☽';
+    position: absolute; right: -20px; top: 40%;
+    font-size: 280px; opacity: .05; line-height: 1;
+    transform: translateY(-50%);
+  }
+  .login-brand { display: flex; align-items: center; gap: 12px; margin-bottom: auto; }
+  .login-brand-icon {
+    width: 44px; height: 44px; border-radius: 11px;
+    background: rgba(201,168,76,.2);
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .login-brand-name { font-size: 22px; font-weight: 700; color: #fff; }
+  .login-brand-ar {
+    font-family: 'Noto Sans Arabic', sans-serif;
+    font-size: 13px; color: var(--gold); margin-top: 2px;
+  }
+  .login-hero { margin-top: auto; margin-bottom: 48px; }
+  .login-hero h1 {
+    font-size: 48px; font-weight: 700; color: #fff;
+    line-height: 1.15; margin-bottom: 18px;
+  }
+  .login-hero h1 span { color: var(--gold); }
+  .login-hero p { font-size: 18px; color: rgba(255,255,255,.7); line-height: 1.6; max-width: 400px; }
+  .login-features { display: flex; flex-direction: column; gap: 14px; }
+  .login-feature {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 15px; color: rgba(255,255,255,.85);
+  }
+  .login-feature-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+  }
+
+  .login-right {
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 60px 80px;
+  }
+  .login-form-wrap { width: 100%; max-width: 420px; }
+  .login-form-wrap h2 { font-size: 32px; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+  .login-form-wrap .subtitle { font-size: 16px; color: var(--text-muted); margin-bottom: 36px; }
+  .login-form { display: flex; flex-direction: column; gap: 20px; }
+  .login-pw-row { display: flex; justify-content: space-between; align-items: center; }
+  .login-pw-row label { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .login-pw-row a { font-size: 13px; color: var(--green); font-weight: 500; }
+  .login-divider {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; color: var(--text-light);
+  }
+  .login-divider::before, .login-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .login-signup { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 8px; }
+  .login-signup a { color: var(--green); font-weight: 600; }
+
+  /* ══════════════════════════════════════════
+     SCREEN 2 — REGISTER
+  ══════════════════════════════════════════ */
+  .register-right .login-form-wrap h2 { font-size: 30px; }
+  .register-right .login-form-wrap .subtitle { margin-bottom: 28px; }
+  .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ══════════════════════════════════════════
+     SCREEN 3 — DASHBOARD
+  ══════════════════════════════════════════ */
+  .dash-body {
+    display: grid;
+    grid-template-columns: 260px 1fr 300px;
+    min-height: calc(900px - 64px);
+  }
+  .dash-sidebar {
+    background: #fff;
+    border-right: 1px solid var(--border);
+    padding: 24px 16px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .sidebar-section { font-size: 11px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: .08em; padding: 16px 12px 8px; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: var(--radius-sm);
+    font-size: 14px; color: var(--text-muted); cursor: pointer;
+  }
+  .sidebar-item:hover { background: var(--bg); }
+  .sidebar-item.active { background: rgba(27,77,62,.08); color: var(--green); font-weight: 600; }
+  .sidebar-icon { font-size: 18px; width: 24px; text-align: center; }
+
+  .dash-main { padding: 32px; overflow-y: auto; display: flex; flex-direction: column; gap: 24px; }
+
+  .greeting-banner {
+    background: var(--green);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .greeting-banner::after { content: '☽'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); font-size: 80px; opacity: .1; }
+  .greeting-banner h2 { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .greeting-banner p { font-size: 15px; color: rgba(255,255,255,.7); }
+  .streak-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(201,168,76,.2); border: 1px solid rgba(201,168,76,.4);
+    border-radius: 24px; padding: 8px 18px;
+    font-size: 15px; font-weight: 600; color: var(--gold);
+  }
+
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+  .stat-card { padding: 20px; }
+  .stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+  .stat-card .stat-value { font-size: 28px; font-weight: 700; color: var(--green); }
+  .stat-card .stat-sub { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+  .prayer-track-card { padding: 24px; }
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .section-head h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .section-head a { font-size: 13px; color: var(--green); font-weight: 500; }
+  .prayer-pills { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+  .prayer-pill {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; padding: 16px 8px;
+    border-radius: var(--radius-md); border: 1.5px solid var(--border);
+    cursor: pointer; transition: all .15s;
+  }
+  .prayer-pill.done { background: var(--green); border-color: var(--green); }
+  .prayer-pill.upcoming { border-color: var(--gold); background: rgba(201,168,76,.06); }
+  .prayer-pill .pill-icon { font-size: 22px; }
+  .prayer-pill .pill-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .prayer-pill .pill-time { font-size: 11px; color: var(--text-muted); }
+  .prayer-pill.done .pill-name,
+  .prayer-pill.done .pill-time { color: rgba(255,255,255,.9); }
+  .prayer-pill.done .pill-icon { filter: brightness(10); }
+
+  .qa-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .qa-card { padding: 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; }
+  .qa-card:hover { border-color: var(--green); }
+  .qa-icon-wrap {
+    width: 44px; height: 44px; border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .qa-icon-green { background: rgba(27,77,62,.1); }
+  .qa-icon-gold  { background: rgba(201,168,76,.15); }
+  .qa-icon-blue  { background: rgba(59,130,246,.1); }
+  .qa-card-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .qa-card-sub   { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+  .dash-right {
+    background: #fff; border-left: 1px solid var(--border);
+    padding: 24px; display: flex; flex-direction: column; gap: 24px;
+  }
+  .next-prayer-card {
+    background: var(--green); border-radius: var(--radius-lg); padding: 20px;
+  }
+  .next-prayer-card .np-label { font-size: 12px; color: rgba(255,255,255,.65); margin-bottom: 6px; }
+  .next-prayer-card .np-name { font-size: 24px; font-weight: 700; color: #fff; }
+  .next-prayer-card .np-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 14px; color: var(--gold); margin-top: 2px; }
+  .next-prayer-card .np-time { font-size: 36px; font-weight: 700; color: #fff; margin: 8px 0 4px; font-variant-numeric: tabular-nums; }
+  .np-countdown {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(201,168,76,.2); border: 1px solid rgba(201,168,76,.35);
+    border-radius: 16px; padding: 5px 14px;
+    font-size: 13px; color: var(--gold); font-weight: 500;
+  }
+
+  .todays-times h4 { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 14px; }
+  .time-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .time-row:last-child { border-bottom: none; }
+  .time-name { font-size: 14px; color: var(--text-primary); }
+  .time-val  { font-size: 14px; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .time-row.current .time-name,
+  .time-row.current .time-val { color: var(--green); font-weight: 700; }
+
+  /* ══════════════════════════════════════════
+     SCREEN 4 — PRAYER TRACKER
+  ══════════════════════════════════════════ */
+  .tracker-body { display: grid; grid-template-columns: 260px 1fr; min-height: calc(900px - 64px); }
+  .tracker-main { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  .tracker-hero { background: var(--green); border-radius: var(--radius-lg); padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .tracker-hero h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .tracker-hero p { font-size: 14px; color: rgba(255,255,255,.7); }
+  .tracker-hero-right { text-align: right; }
+  .tracker-hero-right .big { font-size: 48px; font-weight: 700; color: #fff; line-height: 1; }
+  .tracker-hero-right .small { font-size: 14px; color: rgba(255,255,255,.65); margin-top: 4px; }
+
+  .week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 12px; }
+  .week-day { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .week-day-name { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+  .week-day-date {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; color: var(--text-primary);
+  }
+  .week-day-date.today { background: var(--green); color: #fff; }
+  .week-dots { display: flex; flex-direction: column; gap: 3px; }
+  .week-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+  .week-dot.done { background: var(--green); }
+  .week-dot.missed { background: #FCA5A5; }
+
+  .prayers-table { display: flex; flex-direction: column; gap: 0; }
+  .prayer-row-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px; border-bottom: 1px solid var(--border);
+  }
+  .prayer-row-item:last-child { border-bottom: none; }
+  .prayer-row-item.current-row { background: rgba(27,77,62,.04); }
+  .pr-indicator { width: 4px; height: 40px; border-radius: 2px; background: var(--border); flex-shrink: 0; }
+  .pr-indicator.done { background: var(--green); }
+  .pr-indicator.upcoming { background: var(--gold); }
+  .pr-name { font-size: 16px; font-weight: 600; color: var(--text-primary); flex: 1; }
+  .pr-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 13px; color: var(--text-muted); }
+  .pr-time { font-size: 14px; color: var(--text-muted); font-variant-numeric: tabular-nums; width: 80px; text-align: right; }
+  .pr-action {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+  }
+  .pr-action.done { background: var(--green); color: #fff; }
+  .pr-action.todo { background: var(--bg); border: 1.5px solid var(--border); color: var(--text-muted); }
+
+  /* ══════════════════════════════════════════
+     SCREEN 5 — AI CHATBOT
+  ══════════════════════════════════════════ */
+  .chat-body { display: grid; grid-template-columns: 280px 1fr 300px; min-height: calc(900px - 64px); }
+  .chat-sidebar { background: #fff; border-right: 1px solid var(--border); padding: 20px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .chat-sidebar h3 { font-size: 14px; font-weight: 700; color: var(--text-primary); padding: 4px 8px 12px; }
+  .chat-history-item { padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer; }
+  .chat-history-item:hover { background: var(--bg); }
+  .chat-history-item.active { background: rgba(27,77,62,.08); }
+  .chi-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chi-time { font-size: 11px; color: var(--text-muted); }
+  .new-chat-btn { margin-bottom: 8px; }
+
+  .chat-main { display: flex; flex-direction: column; background: var(--bg); }
+  .chat-header { padding: 16px 24px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .chat-header-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+  .chat-header-status { font-size: 12px; color: var(--text-muted); }
+  .chat-messages { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; min-height: 0; height: 650px; }
+  .msg-group { display: flex; flex-direction: column; gap: 6px; max-width: 65%; }
+  .msg-group.bot { align-self: flex-start; }
+  .msg-group.user { align-self: flex-end; align-items: flex-end; }
+  .msg-bubble { padding: 12px 16px; border-radius: 16px; font-size: 15px; line-height: 1.6; }
+  .msg-group.bot .msg-bubble { background: #fff; border: 1px solid var(--border); color: var(--text-primary); border-top-left-radius: 4px; }
+  .msg-group.user .msg-bubble { background: var(--green); color: #fff; border-top-right-radius: 4px; }
+  .msg-time { font-size: 11px; color: var(--text-muted); padding: 0 4px; }
+  .msg-sources { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .source-chip { background: rgba(27,77,62,.08); color: var(--green); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+  .typing-indicator { display: flex; align-items: center; gap: 6px; padding: 14px 16px; background: #fff; border: 1px solid var(--border); border-radius: 16px; border-top-left-radius: 4px; width: fit-content; }
+  .typing-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: blink 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: .2s; }
+  .typing-dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%,100%{opacity:.2} 50%{opacity:1} }
+  .chat-input-area { padding: 16px 24px; background: #fff; border-top: 1px solid var(--border); }
+  .chat-input-row { display: flex; gap: 10px; align-items: flex-end; }
+  .chat-input-box {
+    flex: 1; min-height: 52px; padding: 14px 16px;
+    border: 1.5px solid var(--border); border-radius: var(--radius-md);
+    font-family: 'Noto Sans', sans-serif; font-size: 15px;
+    color: var(--text-primary); resize: none; outline: none;
+    transition: border-color .15s;
+  }
+  .chat-input-box:focus { border-color: var(--green); }
+  .chat-send-btn {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--green); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+  .chat-suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .chat-suggestion { padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border); background: #fff; font-size: 13px; color: var(--text-primary); cursor: pointer; }
+  .chat-suggestion:hover { border-color: var(--green); color: var(--green); }
+
+  .chat-right { background: #fff; border-left: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .chat-right h4 { font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+  .topic-card { padding: 14px; border-radius: var(--radius-md); border: 1px solid var(--border); cursor: pointer; }
+  .topic-card:hover { border-color: var(--green); }
+  .topic-card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .topic-card-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* ══════════════════════════════════════════
+     SCREEN 6 — DUA FINDER
+  ══════════════════════════════════════════ */
+  .dua-body { padding: 40px 80px; display: flex; flex-direction: column; gap: 32px; max-width: 1100px; margin: 0 auto; width: 100%; }
+  .dua-hero { text-align: center; }
+  .dua-hero h1 { font-size: 38px; font-weight: 700; color: var(--green); margin-bottom: 12px; }
+  .dua-hero p { font-size: 17px; color: var(--text-muted); max-width: 560px; margin: 0 auto; }
+  .dua-search-box { background: #fff; border: 2px solid var(--border); border-radius: var(--radius-xl); padding: 20px 28px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-md); }
+  .dua-search-box textarea { border: none; outline: none; font-family: 'Noto Sans', sans-serif; font-size: 16px; color: var(--text-primary); resize: none; height: 80px; }
+  .dua-search-box textarea::placeholder { color: var(--text-light); }
+  .dua-search-row { display: flex; align-items: center; justify-content: space-between; }
+  .dua-tags { display: flex; gap: 8px; }
+  .dua-tag { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); font-size: 13px; color: var(--text-muted); cursor: pointer; }
+  .dua-tag.active { background: var(--green); color: #fff; border-color: var(--green); }
+  .dua-results { display: flex; flex-direction: column; gap: 16px; }
+  .dua-results-label { font-size: 13px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+  .dua-card { padding: 24px 28px; display: flex; flex-direction: column; gap: 12px; }
+  .dua-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .dua-card-title { font-size: 17px; font-weight: 700; color: var(--text-primary); }
+  .dua-card-meta { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+  .dua-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 22px; color: var(--green); text-align: right; line-height: 1.8; direction: rtl; }
+  .dua-transliteration { font-size: 14px; color: var(--text-muted); font-style: italic; }
+  .dua-translation { font-size: 14px; color: var(--text-primary); line-height: 1.7; padding-top: 8px; border-top: 1px solid var(--border); }
+  .dua-card-footer { display: flex; gap: 8px; }
+
+  /* ══════════════════════════════════════════
+     SCREEN 7 — PRAYER TIMES
+  ══════════════════════════════════════════ */
+  .times-body { display: grid; grid-template-columns: 260px 1fr; min-height: calc(900px - 64px); }
+  .times-main { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  .location-bar { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 18px; }
+  .location-bar .loc-icon { font-size: 20px; }
+  .location-bar .loc-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+  .location-bar .loc-method { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+  .times-hero-card { background: var(--green); border-radius: var(--radius-lg); padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .thc-left .thc-label { font-size: 13px; color: rgba(255,255,255,.65); margin-bottom: 8px; }
+  .thc-left .thc-name { font-size: 32px; font-weight: 700; color: #fff; }
+  .thc-left .thc-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 16px; color: var(--gold); margin-top: 4px; }
+  .thc-left .thc-time { font-size: 56px; font-weight: 700; color: #fff; line-height: 1; margin-top: 12px; font-variant-numeric: tabular-nums; }
+  .thc-right { display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+  .thc-countdown { display: inline-flex; align-items: center; gap: 8px; background: rgba(201,168,76,.2); border: 1px solid rgba(201,168,76,.35); border-radius: 24px; padding: 8px 20px; font-size: 15px; font-weight: 600; color: var(--gold); width: fit-content; }
+  .thc-date { font-size: 15px; color: rgba(255,255,255,.7); }
+  .times-list { display: flex; flex-direction: column; gap: 0; }
+  .times-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--border); background: #fff; }
+  .times-item:first-child { border-radius: var(--radius-md) var(--radius-md) 0 0; }
+  .times-item:last-child { border-radius: 0 0 var(--radius-md) var(--radius-md); border-bottom: none; }
+  .times-item.current { background: rgba(27,77,62,.04); border-left: 3px solid var(--green); }
+  .ti-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+  .ti-dot.active { background: var(--green); }
+  .ti-name { font-size: 15px; font-weight: 600; color: var(--text-primary); flex: 1; }
+  .ti-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 13px; color: var(--text-muted); }
+  .ti-time { font-size: 15px; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .ti-prayed { margin-left: 12px; }
+
+  /* ══════════════════════════════════════════
+     SCREEN 8 — ZAKAT CALCULATOR
+  ══════════════════════════════════════════ */
+  .zakat-body { display: grid; grid-template-columns: 260px 1fr 320px; min-height: calc(900px - 64px); }
+  .zakat-main { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  .zakat-intro h2 { font-size: 28px; font-weight: 700; color: var(--green); margin-bottom: 8px; }
+  .zakat-intro p { font-size: 15px; color: var(--text-muted); max-width: 560px; }
+  .zakat-form-card { padding: 28px; display: flex; flex-direction: column; gap: 24px; }
+  .zakat-section-title { font-size: 14px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .zakat-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .input-prefix { position: relative; }
+  .input-prefix-label { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--text-muted); font-weight: 600; z-index: 1; }
+  .input-prefix input { padding-left: 36px; }
+
+  .zakat-right { background: #fff; border-left: 1px solid var(--border); padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+  .zakat-right h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .nisab-card { background: var(--bg); border-radius: var(--radius-md); padding: 16px; }
+  .nisab-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
+  .nisab-value { font-size: 22px; font-weight: 700; color: var(--green); }
+  .nisab-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .result-card { background: var(--green); border-radius: var(--radius-lg); padding: 24px; text-align: center; }
+  .result-label { font-size: 13px; color: rgba(255,255,255,.7); margin-bottom: 8px; }
+  .result-amount { font-size: 42px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+  .result-currency { font-size: 18px; color: var(--gold); margin-top: 4px; }
+  .result-note { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 12px; line-height: 1.5; }
+  .breakdown { display: flex; flex-direction: column; gap: 10px; }
+  .breakdown-row { display: flex; justify-content: space-between; font-size: 14px; }
+  .breakdown-row .br-label { color: var(--text-muted); }
+  .breakdown-row .br-val { font-weight: 600; color: var(--text-primary); }
+
+  /* ══════════════════════════════════════════
+     SCREEN 9 — PROFILE & SETTINGS
+  ══════════════════════════════════════════ */
+  .profile-body { display: grid; grid-template-columns: 260px 1fr; min-height: calc(900px - 64px); }
+  .profile-main { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  .profile-hero { background: var(--green); border-radius: var(--radius-lg); padding: 32px; display: flex; align-items: center; gap: 24px; }
+  .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: #3a2800; flex-shrink: 0; border: 3px solid rgba(255,255,255,.3); }
+  .profile-info h2 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .profile-info p { font-size: 14px; color: rgba(255,255,255,.7); }
+  .profile-stats { display: flex; gap: 24px; margin-left: auto; }
+  .profile-stat { text-align: center; }
+  .profile-stat .ps-val { font-size: 28px; font-weight: 700; color: #fff; }
+  .profile-stat .ps-label { font-size: 12px; color: rgba(255,255,255,.65); margin-top: 2px; }
+
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .settings-card { padding: 24px; }
+  .settings-card h4 { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row-label { font-size: 14px; color: var(--text-primary); }
+  .settings-row-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .toggle { width: 44px; height: 24px; border-radius: 12px; background: var(--green); position: relative; cursor: pointer; flex-shrink: 0; }
+  .toggle::after { content: ''; width: 18px; height: 18px; border-radius: 50%; background: #fff; position: absolute; top: 3px; right: 3px; }
+  .toggle.off { background: var(--border); }
+  .toggle.off::after { right: auto; left: 3px; }
+  .select-field { height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; color: var(--text-primary); background: #fff; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — LOGIN
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">01 — Login</div>
+  <div class="screen">
+    <div class="login-layout">
+      <div class="login-left">
+        <div class="login-brand">
+          <div class="login-brand-icon">☽</div>
+          <div>
+            <div class="login-brand-name">NoorAI</div>
+            <div class="login-brand-ar">نور الذكاء الاصطناعي</div>
+          </div>
+        </div>
+        <div class="login-hero">
+          <h1>Your daily companion<br>for <span>Islamic living</span></h1>
+          <p>Track your prayers, discover duas, calculate zakat, and get answers from an AI trained on Islamic knowledge.</p>
+        </div>
+        <div class="login-features">
+          <div class="login-feature"><div class="login-feature-dot"></div>Daily prayer tracker with streaks</div>
+          <div class="login-feature"><div class="login-feature-dot"></div>AI chatbot powered by Islamic knowledge</div>
+          <div class="login-feature"><div class="login-feature-dot"></div>Location-based prayer times</div>
+          <div class="login-feature"><div class="login-feature-dot"></div>Personalised dua &amp; Surah finder</div>
+        </div>
+      </div>
+      <div class="login-right">
+        <div class="login-form-wrap">
+          <h2>Welcome back</h2>
+          <p class="subtitle">Sign in to your NoorAI account</p>
+          <div class="login-form">
+            <div class="field">
+              <label>Email address</label>
+              <input type="email" placeholder="you@example.com" />
+            </div>
+            <div class="field">
+              <div class="login-pw-row">
+                <label>Password</label>
+                <a href="#">Forgot password?</a>
+              </div>
+              <input type="password" placeholder="Enter your password" />
+            </div>
+            <button class="btn btn-primary btn-lg btn-full">Sign In</button>
+            <p class="login-signup">Don't have an account? <a href="#">Create one</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — REGISTER
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">02 — Register</div>
+  <div class="screen">
+    <div class="login-layout">
+      <div class="login-left">
+        <div class="login-brand">
+          <div class="login-brand-icon">☽</div>
+          <div>
+            <div class="login-brand-name">NoorAI</div>
+            <div class="login-brand-ar">نور الذكاء الاصطناعي</div>
+          </div>
+        </div>
+        <div class="login-hero">
+          <h1>Begin your journey<br>with <span>NoorAI</span></h1>
+          <p>Join thousands of Muslims using NoorAI to deepen their practice and stay connected to their faith every day.</p>
+        </div>
+        <div class="login-features">
+          <div class="login-feature"><div class="login-feature-dot"></div>Free to get started</div>
+          <div class="login-feature"><div class="login-feature-dot"></div>No credit card required</div>
+          <div class="login-feature"><div class="login-feature-dot"></div>Works on all devices</div>
+        </div>
+      </div>
+      <div class="login-right register-right">
+        <div class="login-form-wrap">
+          <h2>Create your account</h2>
+          <p class="subtitle">Join NoorAI and start your journey</p>
+          <div class="login-form">
+            <div class="name-row">
+              <div class="field"><label>First name</label><input type="text" placeholder="Ahmad" /></div>
+              <div class="field"><label>Last name</label><input type="text" placeholder="Hassan" /></div>
+            </div>
+            <div class="field"><label>Email address</label><input type="email" placeholder="you@example.com" /></div>
+            <div class="field"><label>Password</label><input type="password" placeholder="At least 8 characters" /></div>
+            <div class="field"><label>Confirm password</label><input type="password" placeholder="Repeat your password" /></div>
+            <button class="btn btn-primary btn-lg btn-full">Create Account</button>
+            <p class="login-signup">Already have an account? <a href="#">Sign in</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3 — DASHBOARD
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">03 — Dashboard</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo">☽</div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link active">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon">🔔</div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item active"><span class="sidebar-icon">🏠</span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-section">Tools</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🕐</span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+        <div class="sidebar-section">Account</div>
+        <div class="sidebar-item"><span class="sidebar-icon">👤</span>Profile</div>
+        <div class="sidebar-item"><span class="sidebar-icon">⚙️</span>Settings</div>
+      </div>
+      <div class="dash-main">
+        <div class="greeting-banner">
+          <div>
+            <h2>Assalamu Alaikum, Ahmad 👋</h2>
+            <p>Thursday, 11 June 2026 · Singapore</p>
+          </div>
+          <div class="streak-badge">🔥 14-day streak</div>
+        </div>
+        <div class="stats-row">
+          <div class="card stat-card"><div class="stat-label">Prayers today</div><div class="stat-value">3/5</div><div class="stat-sub">Asr, Maghrib, Isha remaining</div></div>
+          <div class="card stat-card"><div class="stat-label">Current streak</div><div class="stat-value">14 🔥</div><div class="stat-sub">Personal best: 21 days</div></div>
+          <div class="card stat-card"><div class="stat-label">This week</div><div class="stat-value">29/35</div><div class="stat-sub">83% completion rate</div></div>
+          <div class="card stat-card"><div class="stat-label">Duas saved</div><div class="stat-value">7</div><div class="stat-sub">From your history</div></div>
+        </div>
+        <div class="card prayer-track-card">
+          <div class="section-head"><h3>Today's Prayers</h3><a href="#">View history →</a></div>
+          <div class="prayer-pills">
+            <div class="prayer-pill done"><div class="pill-icon">✓</div><div class="pill-name">Fajr</div><div class="pill-time">5:47 AM</div></div>
+            <div class="prayer-pill done"><div class="pill-icon">✓</div><div class="pill-name">Dhuhr</div><div class="pill-time">1:05 PM</div></div>
+            <div class="prayer-pill done"><div class="pill-icon">✓</div><div class="pill-name">Zuhr</div><div class="pill-time">1:05 PM</div></div>
+            <div class="prayer-pill upcoming"><div class="pill-icon">🕐</div><div class="pill-name">Asr</div><div class="pill-time">3:47 PM</div></div>
+            <div class="prayer-pill"><div class="pill-icon">🌙</div><div class="pill-name">Isha</div><div class="pill-time">8:28 PM</div></div>
+          </div>
+        </div>
+        <div class="section-head"><h3>Quick Actions</h3></div>
+        <div class="qa-grid">
+          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-green">🤖</div><div><div class="qa-card-title">Ask NoorAI</div><div class="qa-card-sub">Get answers about Islam</div></div></div>
+          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-gold">📖</div><div><div class="qa-card-title">Find a Dua</div><div class="qa-card-sub">Describe your situation</div></div></div>
+          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-blue">🧮</div><div><div class="qa-card-title">Zakat Calculator</div><div class="qa-card-sub">Calculate what you owe</div></div></div>
+        </div>
+      </div>
+      <div class="dash-right">
+        <div class="next-prayer-card">
+          <div class="np-label">Next prayer</div>
+          <div class="np-name">Asr</div>
+          <div class="np-arabic">العصر</div>
+          <div class="np-time">3:47 PM</div>
+          <div class="np-countdown">⏱ in 1h 23m</div>
+        </div>
+        <div class="todays-times">
+          <h4>Today's times · Singapore</h4>
+          <div class="time-row"><span class="time-name">Fajr</span><span class="time-val">5:47 AM</span></div>
+          <div class="time-row"><span class="time-name">Sunrise</span><span class="time-val">7:04 AM</span></div>
+          <div class="time-row"><span class="time-name">Dhuhr</span><span class="time-val">1:05 PM</span></div>
+          <div class="time-row current"><span class="time-name">Asr ←</span><span class="time-val">3:47 PM</span></div>
+          <div class="time-row"><span class="time-name">Maghrib</span><span class="time-val">7:15 PM</span></div>
+          <div class="time-row"><span class="time-name">Isha</span><span class="time-val">8:28 PM</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4 — PRAYER TRACKER
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">04 — Prayer Tracker</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo">☽</div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link active">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon">🔔</div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div class="tracker-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
+        <div class="sidebar-item active"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-section">Tools</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🕐</span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+      </div>
+      <div class="tracker-main">
+        <div class="tracker-hero">
+          <div>
+            <h2>Prayer Tracker</h2>
+            <p>Thursday, 11 June 2026 · Week 24</p>
+          </div>
+          <div class="tracker-hero-right">
+            <div class="big">14</div>
+            <div class="small">Day streak 🔥</div>
+          </div>
+        </div>
+        <div class="card" style="padding:24px">
+          <div class="section-head"><h3>This Week</h3></div>
+          <div class="week-grid">
+            <div class="week-day"><div class="week-day-name">Mon</div><div class="week-day-date">5</div><div class="week-dots"><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div></div></div>
+            <div class="week-day"><div class="week-day-name">Tue</div><div class="week-day-date">6</div><div class="week-dots"><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot missed"></div><div class="week-dot done"></div></div></div>
+            <div class="week-day"><div class="week-day-name">Wed</div><div class="week-day-date">7</div><div class="week-dots"><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div></div></div>
+            <div class="week-day"><div class="week-day-name">Thu</div><div class="week-day-date today">8</div><div class="week-dots"><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot done"></div><div class="week-dot"></div><div class="week-dot"></div></div></div>
+            <div class="week-day"><div class="week-day-name">Fri</div><div class="week-day-date">9</div><div class="week-dots"><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div></div></div>
+            <div class="week-day"><div class="week-day-name">Sat</div><div class="week-day-date">10</div><div class="week-dots"><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div></div></div>
+            <div class="week-day"><div class="week-day-name">Sun</div><div class="week-day-date">11</div><div class="week-dots"><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div><div class="week-dot"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="padding:20px 24px"><div class="section-head"><h3>Today's Prayers</h3></div></div>
+          <div class="prayers-table">
+            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Fajr</div><div class="pr-arabic">الفجر</div></div><div class="pr-time">5:47 AM</div><div class="pr-action done">✓</div></div>
+            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Dhuhr</div><div class="pr-arabic">الظهر</div></div><div class="pr-time">1:05 PM</div><div class="pr-action done">✓</div></div>
+            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Zuhr</div><div class="pr-arabic">الظهر</div></div><div class="pr-time">1:05 PM</div><div class="pr-action done">✓</div></div>
+            <div class="prayer-row-item current-row"><div class="pr-indicator upcoming"></div><div><div class="pr-name" style="color:var(--green)">Asr</div><div class="pr-arabic">العصر</div></div><div class="pr-time" style="color:var(--green);font-weight:700">3:47 PM</div><div class="pr-action todo">○</div></div>
+            <div class="prayer-row-item"><div class="pr-indicator"></div><div><div class="pr-name">Maghrib</div><div class="pr-arabic">المغرب</div></div><div class="pr-time">7:15 PM</div><div class="pr-action todo">○</div></div>
+            <div class="prayer-row-item"><div class="pr-indicator"></div><div><div class="pr-name">Isha</div><div class="pr-arabic">العشاء</div></div><div class="pr-time">8:28 PM</div><div class="pr-action todo">○</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5 — AI CHATBOT
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">05 — AI Chatbot</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo">☽</div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link active">AI Chat</div>
+        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon">🔔</div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div class="chat-body">
+      <div class="chat-sidebar">
+        <button class="btn btn-primary btn-md btn-full new-chat-btn">+ New Chat</button>
+        <h3>Recent chats</h3>
+        <div class="chat-history-item active"><div class="chi-title">Significance of Surah Al-Fatiha</div><div class="chi-time">Today, 10:31 AM</div></div>
+        <div class="chat-history-item"><div class="chi-title">Dua for anxiety and stress</div><div class="chi-time">Yesterday</div></div>
+        <div class="chat-history-item"><div class="chi-title">How to perform Wudu correctly</div><div class="chi-time">Mon, 8 Jun</div></div>
+        <div class="chat-history-item"><div class="chi-title">Zakat on gold and silver</div><div class="chi-time">Sun, 7 Jun</div></div>
+      </div>
+      <div class="chat-main">
+        <div class="chat-header">
+          <div class="chat-avatar">🤖</div>
+          <div><div class="chat-header-name">NoorAI Assistant</div><div class="chat-header-status">Powered by Islamic knowledge base + web search</div></div>
+        </div>
+        <div class="chat-messages">
+          <div class="msg-group bot">
+            <div class="msg-bubble">Assalamu Alaikum! 🌙 I'm NoorAI. I can answer questions about Islam, find duas for you, explain Quranic verses, or help with fiqh questions. How can I help you today?</div>
+            <div class="msg-time">10:30 AM</div>
+          </div>
+          <div class="msg-group user">
+            <div class="msg-bubble">What is the significance of Surah Al-Fatiha?</div>
+            <div class="msg-time">10:31 AM</div>
+          </div>
+          <div class="msg-group bot">
+            <div class="msg-bubble">Surah Al-Fatiha, "The Opening," is the first chapter of the Quran and one of the most profound. It is called Umm al-Quran (Mother of the Quran) and is recited in every unit of prayer — making it the most repeated supplication in Islam.<br><br>It covers three core themes: praise and gratitude to Allah, acknowledgment of His sovereignty on the Day of Judgment, and a heartfelt supplication for guidance on the straight path.</div>
+            <div class="msg-sources">
+              <span class="source-chip">📖 Quran 1:1–7</span>
+              <span class="source-chip">🗄 Knowledge base</span>
+              <span class="source-chip">🌐 Web search</span>
+            </div>
+            <div class="msg-time">10:31 AM</div>
+          </div>
+          <div class="msg-group user">
+            <div class="msg-bubble">Can you share the Arabic text with transliteration?</div>
+            <div class="msg-time">10:32 AM</div>
+          </div>
+          <div class="msg-group bot">
+            <div class="typing-indicator">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <span style="font-size:13px;color:var(--text-muted);margin-left:4px">NoorAI is thinking…</span>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <div class="chat-suggestions">
+            <div class="chat-suggestion">Tell me more about its themes</div>
+            <div class="chat-suggestion">What do scholars say about it?</div>
+            <div class="chat-suggestion">Share a tafsir explanation</div>
+          </div>
+          <div class="chat-input-row">
+            <textarea class="chat-input-box" placeholder="Ask about Islam, duas, Quran, or fiqh…"></textarea>
+            <button class="chat-send-btn">➤</button>
+          </div>
+        </div>
+      </div>
+      <div class="chat-right">
+        <h4>Suggested topics</h4>
+        <div class="topic-card"><div class="topic-card-title">🕌 Five Pillars of Islam</div><div class="topic-card-sub">Learn about Shahada, Salah, Zakat, Sawm, Hajj</div></div>
+        <div class="topic-card"><div class="topic-card-title">📿 99 Names of Allah</div><div class="topic-card-sub">Explore Al-Asma ul-Husna</div></div>
+        <div class="topic-card"><div class="topic-card-title">🤲 Daily Duas</div><div class="topic-card-sub">Morning, evening, and situational duas</div></div>
+        <div class="topic-card"><div class="topic-card-title">📖 Quran Tafsir</div><div class="topic-card-sub">Explore meanings and commentary</div></div>
+        <div style="border-top:1px solid var(--border);padding-top:16px">
+          <h4>Sources used</h4>
+          <p style="font-size:13px;color:var(--text-muted);margin-top:8px;line-height:1.6">NoorAI searches a curated Islamic knowledge base, verified hadith collections, and trusted web sources to answer your questions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6 — DUA FINDER
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">06 — Dua &amp; Surah Finder</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo">☽</div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link active">Duas</div>
+        <div class="topnav-link">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon">🔔</div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div style="padding:40px 80px;overflow-y:auto;max-height:836px">
+      <div class="dua-hero" style="margin-bottom:32px">
+        <h1>Find the right Dua</h1>
+        <p>Describe what you are going through and NoorAI will find the most relevant duas and Surahs for your situation.</p>
+      </div>
+      <div class="dua-search-box" style="margin-bottom:32px">
+        <textarea placeholder="e.g. I am feeling anxious about an exam tomorrow and need strength and guidance…"></textarea>
+        <div class="dua-search-row">
+          <div class="dua-tags">
+            <div class="dua-tag active">All</div>
+            <div class="dua-tag">Anxiety</div>
+            <div class="dua-tag">Gratitude</div>
+            <div class="dua-tag">Protection</div>
+            <div class="dua-tag">Forgiveness</div>
+            <div class="dua-tag">Guidance</div>
+          </div>
+          <button class="btn btn-primary btn-md">Find Duas →</button>
+        </div>
+      </div>
+      <div class="dua-results">
+        <div class="dua-results-label">3 results for "anxiety and exams"</div>
+        <div class="card dua-card">
+          <div class="dua-card-header">
+            <div><div class="dua-card-title">Dua for anxiety and sorrow</div><div class="dua-card-meta">Hadith · Sahih Bukhari 7/158</div></div>
+            <div style="display:flex;gap:8px"><span class="badge badge-gold">Highly relevant</span><button class="btn btn-ghost btn-sm">Save</button></div>
+          </div>
+          <div class="dua-arabic">اللَّهُمَّ إِنِّي عَبْدُكَ وَابْنُ عَبْدِكَ</div>
+          <div class="dua-transliteration">Allahumma inni abduka, wabnu abdika, wabnu amatika…</div>
+          <div class="dua-translation">"O Allah, I am Your servant, son of Your servant, son of Your maidservant. My forelock is in Your hand, Your command over me is forever executed and Your decree over me is just…"</div>
+          <div class="dua-card-footer"><button class="btn btn-outline btn-sm">Play audio</button><button class="btn btn-ghost btn-sm">Share</button></div>
+        </div>
+        <div class="card dua-card">
+          <div class="dua-card-header">
+            <div><div class="dua-card-title">Surah Al-Inshirah (94)</div><div class="dua-card-meta">Quran · Chapter 94, 8 verses</div></div>
+            <div style="display:flex;gap:8px"><span class="badge badge-green">Recommended</span><button class="btn btn-ghost btn-sm">Save</button></div>
+          </div>
+          <div class="dua-arabic">أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ</div>
+          <div class="dua-transliteration">Alam nashrah laka sadrak…</div>
+          <div class="dua-translation">"Did We not expand for you your breast? And We removed from you your burden which had weighed upon your back. And raised high for you your repute. For indeed, with hardship will be ease…"</div>
+          <div class="dua-card-footer"><button class="btn btn-outline btn-sm">Play audio</button><button class="btn btn-ghost btn-sm">Share</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 7 — PRAYER TIMES
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">07 — Prayer Times</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo">☽</div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link">Duas</div>
+        <div class="topnav-link active">Times</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon">🔔</div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div class="times-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-section">Tools</div>
+        <div class="sidebar-item active"><span class="sidebar-icon">🕐</span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+      </div>
+      <div class="times-main">
+        <div class="location-bar">
+          <div class="loc-icon">📍</div>
+          <div class="loc-name">Singapore, SG</div>
+          <div class="loc-method">Calculation: MUIS method · Shafi'i</div>
+          <button class="btn btn-ghost btn-sm" style="margin-left:16px">Change location</button>
+        </div>
+        <div class="times-hero-card">
+          <div class="thc-left">
+            <div class="thc-label">Current / next prayer</div>
+            <div class="thc-name">Asr</div>
+            <div class="thc-arabic">العصر</div>
+            <div class="thc-time">3:47 PM</div>
+          </div>
+          <div class="thc-right">
+            <div class="thc-countdown">⏱ in 1 hour 23 minutes</div>
+            <div class="thc-date">Thursday, 11 June 2026</div>
+            <div style="display:flex;gap:10px;margin-top:8px">
+              <span class="badge badge-gold">Shafi'i</span>
+              <span class="badge badge-gray">Singapore</span>
+            </div>
+          </div>
+        </div>
+        <div class="times-list">
+          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Fajr</div><div class="ti-arabic">الفجر</div></div><div class="ti-time">5:47 AM</div><div class="ti-prayed"><span class="badge badge-green">Prayed ✓</span></div></div>
+          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Sunrise</div><div class="ti-arabic">الشروق</div></div><div class="ti-time">7:04 AM</div><div class="ti-prayed"></div></div>
+          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Dhuhr</div><div class="ti-arabic">الظهر</div></div><div class="ti-time">1:05 PM</div><div class="ti-prayed"><span class="badge badge-green">Prayed ✓</span></div></div>
+          <div class="times-item current"><div class="ti-dot active"></div><div style="flex:1"><div class="ti-name" style="color:var(--green)">Asr</div><div class="ti-arabic">العصر</div></div><div class="ti-time" style="color:var(--green);font-weight:700">3:47 PM</div><div class="ti-prayed"><span class="badge badge-gold">Upcoming</span></div></div>
+          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Maghrib</div><div class="ti-arabic">المغرب</div></div><div class="ti-time">7:15 PM</div><div class="ti-prayed"></div></div>
+          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Isha</div><div class="ti-arabic">العشاء</div></div><div class="ti-time">8:28 PM</div><div class="ti-prayed"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 8 — ZAKAT CALCULATOR
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">08 — Zakat Calculator</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo">☽</div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link">Duas</div>
+        <div class="topnav-link active">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon">🔔</div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div class="zakat-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-section">Tools</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🕐</span>Prayer Times</div>
+        <div class="sidebar-item active"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+      </div>
+      <div class="zakat-main">
+        <div class="zakat-intro">
+          <h2>Zakat Calculator</h2>
+          <p>Enter your assets below to calculate how much Zakat you owe this year. Zakat is 2.5% of your total eligible wealth above the Nisab threshold.</p>
+        </div>
+        <div class="card zakat-form-card">
+          <div class="zakat-section-title">Cash &amp; Savings</div>
+          <div class="zakat-fields">
+            <div class="field"><label>Cash in hand</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
+            <div class="field"><label>Bank savings</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
+          </div>
+          <div class="zakat-section-title" style="margin-top:8px">Gold &amp; Silver</div>
+          <div class="zakat-fields">
+            <div class="field"><label>Gold (grams)</label><input type="number" placeholder="0" /></div>
+            <div class="field"><label>Silver (grams)</label><input type="number" placeholder="0" /></div>
+          </div>
+          <div class="zakat-section-title" style="margin-top:8px">Investments &amp; Business</div>
+          <div class="zakat-fields">
+            <div class="field"><label>Stocks &amp; investments</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
+            <div class="field"><label>Business assets</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:8px">
+            <button class="btn btn-primary btn-lg" style="flex:1">Calculate Zakat</button>
+            <button class="btn btn-outline btn-lg">Reset</button>
+          </div>
+        </div>
+      </div>
+      <div class="zakat-right">
+        <h3>Nisab Threshold</h3>
+        <div class="nisab-card">
+          <div class="nisab-label">Gold nisab (85g)</div>
+          <div class="nisab-value">$7,234.50</div>
+          <div class="nisab-sub">Updated today · SGD</div>
+        </div>
+        <div class="nisab-card" style="margin-top:12px">
+          <div class="nisab-label">Silver nisab (595g)</div>
+          <div class="nisab-value">$682.30</div>
+          <div class="nisab-sub">Updated today · SGD</div>
+        </div>
+        <div class="result-card">
+          <div class="result-label">Your Zakat due</div>
+          <div class="result-amount">$1,250</div>
+          <div class="result-currency">Singapore Dollar (SGD)</div>
+          <div class="result-note">Based on 2.5% of total eligible assets above the Nisab threshold</div>
+        </div>
+        <div class="breakdown">
+          <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Breakdown</div>
+          <div class="breakdown-row"><span class="br-label">Total assets</span><span class="br-val">$50,000</span></div>
+          <div class="breakdown-row"><span class="br-label">Deductions</span><span class="br-val">— $0</span></div>
+          <div class="breakdown-row"><span class="br-label">Zakatable wealth</span><span class="br-val">$50,000</span></div>
+          <div class="breakdown-row"><span class="br-label">Zakat rate</span><span class="br-val">2.5%</span></div>
+          <div class="breakdown-row" style="font-weight:700;border-top:1px solid var(--border);padding-top:8px"><span class="br-label" style="color:var(--text-primary)">Total due</span><span class="br-val" style="color:var(--green)">$1,250</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 9 — PROFILE & SETTINGS
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">09 — Profile &amp; Settings</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo">☽</div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon">🔔</div>
+        <div class="topnav-avatar" style="background:var(--gold);font-weight:700">AH</div>
+      </div>
+    </div>
+    <div class="profile-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-section">Account</div>
+        <div class="sidebar-item active"><span class="sidebar-icon">👤</span>Profile</div>
+        <div class="sidebar-item"><span class="sidebar-icon">⚙️</span>Settings</div>
+        <div class="sidebar-item" style="margin-top:auto;color:#EF4444"><span class="sidebar-icon">🚪</span>Sign out</div>
+      </div>
+      <div class="profile-main">
+        <div class="profile-hero">
+          <div class="profile-avatar">AH</div>
+          <div class="profile-info">
+            <h2>Ahmad Hassan</h2>
+            <p>ahmad.hassan@email.com · Member since January 2026</p>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <span class="badge badge-gold">🔥 14-day streak</span>
+              <span class="badge" style="background:rgba(255,255,255,.2);color:#fff">Singapore, SG</span>
+            </div>
+          </div>
+          <div class="profile-stats">
+            <div class="profile-stat"><div class="ps-val">847</div><div class="ps-label">Prayers logged</div></div>
+            <div class="profile-stat"><div class="ps-val">14</div><div class="ps-label">Day streak</div></div>
+            <div class="profile-stat"><div class="ps-val">92%</div><div class="ps-label">Completion</div></div>
+          </div>
+        </div>
+        <div class="settings-grid">
+          <div class="card settings-card">
+            <h4>Personal Information</h4>
+            <div class="settings-row"><div><div class="settings-row-label">Full name</div><div class="settings-row-sub">Ahmad Hassan</div></div><button class="btn btn-ghost btn-sm">Edit</button></div>
+            <div class="settings-row"><div><div class="settings-row-label">Email</div><div class="settings-row-sub">ahmad.hassan@email.com</div></div><button class="btn btn-ghost btn-sm">Edit</button></div>
+            <div class="settings-row"><div><div class="settings-row-label">Location</div><div class="settings-row-sub">Singapore, SG</div></div><button class="btn btn-ghost btn-sm">Edit</button></div>
+            <div class="settings-row"><div><div class="settings-row-label">Madhab</div><div class="settings-row-sub">Shafi'i</div></div><select class="select-field"><option>Shafi'i</option><option>Hanafi</option><option>Maliki</option><option>Hanbali</option></select></div>
+          </div>
+          <div class="card settings-card">
+            <h4>Notifications</h4>
+            <div class="settings-row"><div><div class="settings-row-label">Prayer time alerts</div><div class="settings-row-sub">Get notified 10 mins before each prayer</div></div><div class="toggle"></div></div>
+            <div class="settings-row"><div><div class="settings-row-label">Streak reminders</div><div class="settings-row-sub">Daily reminder to maintain your streak</div></div><div class="toggle"></div></div>
+            <div class="settings-row"><div><div class="settings-row-label">Weekly summary</div><div class="settings-row-sub">Prayer completion report every Sunday</div></div><div class="toggle off"></div></div>
+          </div>
+          <div class="card settings-card">
+            <h4>Appearance</h4>
+            <div class="settings-row"><div><div class="settings-row-label">Dark mode</div><div class="settings-row-sub">Switch to dark theme</div></div><div class="toggle off"></div></div>
+            <div class="settings-row"><div><div class="settings-row-label">Language</div><div class="settings-row-sub">App display language</div></div><select class="select-field"><option>English</option><option>Arabic</option><option>Malay</option></select></div>
+            <div class="settings-row"><div><div class="settings-row-label">Prayer calculation</div><div class="settings-row-sub">Method used for prayer times</div></div><select class="select-field"><option>MUIS</option><option>MWL</option><option>ISNA</option></select></div>
+          </div>
+          <div class="card settings-card">
+            <h4>Privacy &amp; Security</h4>
+            <div class="settings-row"><div><div class="settings-row-label">Change password</div><div class="settings-row-sub">Last changed 3 months ago</div></div><button class="btn btn-ghost btn-sm">Update</button></div>
+            <div class="settings-row"><div><div class="settings-row-label">Two-factor auth</div><div class="settings-row-sub">Add extra security to your account</div></div><div class="toggle off"></div></div>
+            <div class="settings-row"><div><div class="settings-row-label">Export my data</div><div class="settings-row-sub">Download all your prayer history</div></div><button class="btn btn-ghost btn-sm">Export</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
