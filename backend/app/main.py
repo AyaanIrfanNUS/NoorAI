@@ -1,8 +1,5 @@
 """
 NoorAI Backend - Main Application Entry Point
-
-This is the front door of our backend. Starting this file with uvicorn
-brings the whole API to life.
 """
 
 from contextlib import asynccontextmanager
@@ -13,12 +10,18 @@ from fastapi.middleware.cors import CORSMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Lifespan events run code on startup and shutdown.
-
-    Right now we just print messages so we can see it working.
-    In Step 3, we will add a real database connection test here.
+    Runs on startup and shutdown.
+    On startup, tests the database connection.
     """
+    from sqlalchemy import text
+    from app.core.database import engine
+
     print("NoorAI backend is starting up...")
+
+    async with engine.connect() as conn:
+        result = await conn.execute(text("SELECT 1"))
+        print("Database connection test result:", result.scalar())
+
     yield
     print("NoorAI backend is shutting down...")
 
@@ -30,8 +33,6 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS middleware - lets our frontend talk to this backend.
-# In development, our React frontend runs on localhost:5173 (Vite default port).
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -46,11 +47,5 @@ app.add_middleware(
 
 @app.get("/health")
 async def health_check():
-    """
-    Simple health check endpoint.
-
-    Returns a small JSON object confirming the API is alive.
-    Useful for testing, and later for deployment platforms (like Railway)
-    to check whether our app is running correctly.
-    """
+    """Health check endpoint."""
     return {"status": "ok", "app": "NoorAI"}
