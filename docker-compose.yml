@@ -1,0 +1,94 @@
+services:
+  # ─── PostgreSQL database with pgvector for AI embeddings ───
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: noorai_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: noorai_user
+      POSTGRES_PASSWORD: noorai_pass
+      POSTGRES_DB: noorai_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U noorai_user -d noorai_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - noorai_network
+
+  # ─── Redis for caching and background task queues ───
+  redis:
+    image: redis:7-alpine
+    container_name: noorai_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - noorai_network
+
+  # ─── FastAPI backend (placeholder — built in a later chat) ───
+  backend:
+    build:
+      context: ./backend
+    container_name: noorai_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - noorai_network
+
+  # ─── React frontend (placeholder — built in a later chat) ───
+  frontend:
+    build:
+      context: ./frontend
+    container_name: noorai_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - noorai_network
+
+  # ─── Nginx reverse proxy (routes traffic to frontend/backend) ───
+  nginx:
+    image: nginx:alpine
+    container_name: noorai_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - noorai_network
+
+# ─── Named volumes: these persist data even if containers are deleted ───
+volumes:
+  postgres_data:
+  redis_data:
+
+# ─── Shared network: lets all services find each other by name ───
+networks:
+  noorai_network:
+    driver: bridge
