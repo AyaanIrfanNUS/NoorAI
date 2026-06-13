@@ -110,6 +110,10 @@ async def get_streak(
 
     current_streak = 0
     check_date = datetime.now(timezone.utc).date()
+
+    if check_date not in complete_days:
+        check_date -= timedelta(days=1)
+
     while check_date in complete_days:
         current_streak += 1
         check_date -= timedelta(days=1)
@@ -195,6 +199,10 @@ async def get_stats(
 
     current_streak = 0
     check_date = datetime.now(timezone.utc).date()
+
+    if check_date not in complete_days:
+        check_date -= timedelta(days=1)
+
     while check_date in complete_days:
         current_streak += 1
         check_date -= timedelta(days=1)
