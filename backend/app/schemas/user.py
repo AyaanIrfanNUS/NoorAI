@@ -15,6 +15,7 @@ class UserCreate(BaseModel):
     location_lat: float | None = None
     location_lng: float | None = None
     currency: str = "USD"
+    calculation_method: int = 3
 
 
 class UserUpdate(BaseModel):
@@ -22,6 +23,7 @@ class UserUpdate(BaseModel):
     location_lat: float | None = None
     location_lng: float | None = None
     currency: str | None = None
+    calculation_method: int | None = None
 
 
 class UserRead(BaseModel):
@@ -33,6 +35,7 @@ class UserRead(BaseModel):
     location_lat: float | None
     location_lng: float | None
     currency: str
+    calculation_method: int
     is_active: bool
     created_at: datetime
     updated_at: datetime
