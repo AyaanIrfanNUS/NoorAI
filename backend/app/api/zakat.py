@@ -23,7 +23,7 @@ async def calculate(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    breakdown = calculate_zakat(
+    breakdown = await calculate_zakat(
         cash_savings=payload.cash_savings,
         gold_value=payload.gold_value,
         silver_value=payload.silver_value,
