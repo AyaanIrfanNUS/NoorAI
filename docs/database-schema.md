@@ -15,6 +15,7 @@
 | created_at | TIMESTAMP | DEFAULT now() | Account creation date |
 | updated_at | TIMESTAMP | DEFAULT now() | Last profile update |
 | currency | VARCHAR(3) | DEFAULT 'USD' | ISO currency code used for zakat calculations and display |
+| calculation_method | SMALLINT | NOT NULL, default 3 | Aladhan calculation method ID (3 = Muslim World League) |
 
 ## prayer_logs
 | Column | Type | Constraints | Purpose |
