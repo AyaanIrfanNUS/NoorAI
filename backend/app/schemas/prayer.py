@@ -32,3 +32,14 @@ class PrayerStats(BaseModel):
     longest_streak: int
     completion_rate: float
     total_prayers_logged: int
+
+
+class TodayPrayerStatus(BaseModel):
+    prayer_name: str
+    completed: bool
+    prayed_at: datetime | None = None
+
+
+class StreakResponse(BaseModel):
+    current_streak: int
+    longest_streak: int
