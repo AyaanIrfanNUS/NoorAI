@@ -1,20 +1,12 @@
 """
 Zakat calculation logic.
 
-Nisab is the minimum threshold of wealth a person must have before
-zakat becomes due, traditionally defined as the value of 87.48 grams
-of gold or 612.36 grams of silver.
-
-Gold and silver prices are defined in app.core.exchange_rates as
-placeholders in USD per gram, then converted into the user's currency.
-Replace with live metals price and exchange rate APIs when available.
+Nisab thresholds are computed using live gold and silver spot prices
+fetched via app.core.exchange_rates. Falls back to hardcoded constants
+if live pricing is unavailable.
 """
 
-from app.core.exchange_rates import (
-    GOLD_PRICE_PER_GRAM_USD,
-    SILVER_PRICE_PER_GRAM_USD,
-    convert_from_usd,
-)
+from app.core.exchange_rates import convert_from_usd, get_gold_price_usd, get_silver_price_usd
 
 ZAKAT_RATE = 0.025
 
@@ -22,17 +14,19 @@ GOLD_NISAB_GRAMS = 87.48
 SILVER_NISAB_GRAMS = 612.36
 
 
-def calculate_nisab_gold(currency: str) -> float:
-    value_usd = GOLD_NISAB_GRAMS * GOLD_PRICE_PER_GRAM_USD
-    return convert_from_usd(value_usd, currency)
+async def calculate_nisab_gold(currency: str) -> float:
+    gold_price = await get_gold_price_usd()
+    value_usd = GOLD_NISAB_GRAMS * gold_price
+    return await convert_from_usd(value_usd, currency)
 
 
-def calculate_nisab_silver(currency: str) -> float:
-    value_usd = SILVER_NISAB_GRAMS * SILVER_PRICE_PER_GRAM_USD
-    return convert_from_usd(value_usd, currency)
+async def calculate_nisab_silver(currency: str) -> float:
+    silver_price = await get_silver_price_usd()
+    value_usd = SILVER_NISAB_GRAMS * silver_price
+    return await convert_from_usd(value_usd, currency)
 
 
-def calculate_zakat(
+async def calculate_zakat(
     cash_savings: float,
     gold_value: float,
     silver_value: float,
@@ -41,8 +35,8 @@ def calculate_zakat(
 ) -> dict:
     total_wealth = cash_savings + gold_value + silver_value + business_assets
 
-    nisab_gold = calculate_nisab_gold(currency)
-    nisab_silver = calculate_nisab_silver(currency)
+    nisab_gold = await calculate_nisab_gold(currency)
+    nisab_silver = await calculate_nisab_silver(currency)
 
     nisab_threshold = min(nisab_gold, nisab_silver)
 

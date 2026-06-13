@@ -9,6 +9,7 @@ from app.api import auth
 from app.api import prayers
 from app.api import zakat
 from app.api import users
+from app.api import prayer_times
 
 
 @asynccontextmanager
@@ -52,6 +53,7 @@ app.include_router(auth.router)
 app.include_router(prayers.router)
 app.include_router(zakat.router)
 app.include_router(users.router)
+app.include_router(prayer_times.router)
 
 
 @app.get("/health")
