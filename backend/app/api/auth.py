@@ -41,6 +41,7 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
         full_name=payload.full_name,
         location_lat=payload.location_lat,
         location_lng=payload.location_lng,
+        currency=payload.currency,
     )
     db.add(user)
     await db.commit()

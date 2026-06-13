@@ -14,6 +14,7 @@
 | madhab | VARCHAR(20) | DEFAULT 'shafii' | Affects prayer time calc & fiqh answers |
 | created_at | TIMESTAMP | DEFAULT now() | Account creation date |
 | updated_at | TIMESTAMP | DEFAULT now() | Last profile update |
+| currency | VARCHAR(3) | DEFAULT 'USD' | ISO currency code used for zakat calculations and display |
 
 ## prayer_logs
 | Column | Type | Constraints | Purpose |
