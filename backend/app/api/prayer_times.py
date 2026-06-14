@@ -24,6 +24,16 @@ def _require_location(current_user: User) -> None:
         )
 
 
+def _school_for_madhab(madhab: str) -> int:
+    """Map a user's madhab to Aladhan's school parameter.
+
+    Hanafi uses a later Asr calculation (school=1); all other madhabs
+    (Shafi'i, Maliki, Hanbali, Jafari) use the standard convention
+    (school=0).
+    """
+    return 1 if madhab == "hanafi" else 0
+
+
 @router.get("/today", response_model=PrayerTimesResponse)
 async def get_today_prayer_times(
     current_user: User = Depends(get_current_user),
@@ -35,6 +45,7 @@ async def get_today_prayer_times(
             lat=current_user.location_lat,
             lng=current_user.location_lng,
             calculation_method=current_user.calculation_method,
+            school=_school_for_madhab(current_user.madhab),
         )
     except PrayerTimesError as exc:
         raise HTTPException(
@@ -56,6 +67,7 @@ async def get_next_prayer(
             lat=current_user.location_lat,
             lng=current_user.location_lng,
             calculation_method=current_user.calculation_method,
+            school=_school_for_madhab(current_user.madhab),
         )
     except PrayerTimesError as exc:
         raise HTTPException(

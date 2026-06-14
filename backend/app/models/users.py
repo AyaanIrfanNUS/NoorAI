@@ -23,8 +23,10 @@ class User(Base):
     full_name: Mapped[str] = mapped_column(String(255), nullable=False)
     location_lat: Mapped[float | None] = mapped_column(Float, nullable=True)
     location_lng: Mapped[float | None] = mapped_column(Float, nullable=True)
+    location_country: Mapped[str | None] = mapped_column(String(2), nullable=True)
     currency: Mapped[str] = mapped_column(String(3), default="USD", server_default="USD", nullable=False)
     calculation_method: Mapped[int] = mapped_column(Integer, default=3, server_default="3", nullable=False)
+    madhab: Mapped[str] = mapped_column(String(10), default="shafi", server_default="shafi", nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
