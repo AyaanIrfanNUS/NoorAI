@@ -5,17 +5,22 @@ User schemas.
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr, ConfigDict, Field, field_validator
 
 
 class UserCreate(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(min_length=8)
     full_name: str
     location_lat: float | None = None
     location_lng: float | None = None
     currency: str = "USD"
     calculation_method: int = 3
+
+    @field_validator("email")
+    @classmethod
+    def normalize_email(cls, v: str) -> str:
+        return v.strip().lower()
 
 
 class UserUpdate(BaseModel):

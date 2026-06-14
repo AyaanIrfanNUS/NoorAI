@@ -200,3 +200,44 @@ async def test_optional_current_user_invalid_token(db_session):
         await optional_current_user(token="invalid.token.here", db=db_session)
 
     assert exc_info.value.status_code == 401
+
+
+async def test_register_password_too_short(client, unique_email):
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "short1",
+            "full_name": "Test User",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+async def test_register_email_normalized(client):
+    email_with_case_and_spaces = "  Normalize_Test@Example.COM  "
+
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": email_with_case_and_spaces,
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["email"] == "normalize_test@example.com"
+
+    second_response = await client.post(
+        "/auth/register",
+        json={
+            "email": "normalize_test@example.com",
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+
+    assert second_response.status_code == 400
+    assert "already exists" in second_response.json()["detail"]
