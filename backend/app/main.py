@@ -13,6 +13,7 @@ from app.api import prayer_times
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from app.core.limiter import limiter
+from app.core.config import settings
 
 
 @asynccontextmanager
@@ -41,15 +42,22 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+
+if settings.APP_ENV == "production":
+    cors_origins = [settings.FRONTEND_URL]
+else:
+    cors_origins = [
         "http://localhost:5173",
         "http://localhost:3000",
-    ],
+    ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
