@@ -48,7 +48,7 @@ async def test_prayer_times_today(client, unique_email):
     token = await _register_with_location(client, unique_email)
 
     with patch(
-        "app.services.prayer_times.get_prayer_times",
+        "app.api.prayer_times.get_prayer_times",
         new=AsyncMock(return_value=MOCK_PRAYER_TIMES),
     ):
         response = await client.get(
@@ -123,3 +123,22 @@ async def test_prayer_times_aladhan_unavailable(client, unique_email):
         )
 
     assert response.status_code == 503
+
+
+async def test_school_affects_asr_time():
+    """Hanafi school (1) produces a later Asr time than the default
+    school (0) for the same location and date - verified against the
+    real Aladhan API."""
+    from datetime import date
+    from app.services.prayer_times import _fetch_from_aladhan
+
+    target_date = date(2026, 6, 14)
+
+    shafi_result = await _fetch_from_aladhan(
+        lat=1.3521, lng=103.8198, calculation_method=3, school=0, target_date=target_date
+    )
+    hanafi_result = await _fetch_from_aladhan(
+        lat=1.3521, lng=103.8198, calculation_method=3, school=1, target_date=target_date
+    )
+
+    assert shafi_result["timings"]["Asr"] != hanafi_result["timings"]["Asr"]

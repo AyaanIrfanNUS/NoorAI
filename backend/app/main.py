@@ -3,13 +3,20 @@ NoorAI Backend - Main Application Entry Point
 """
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from app.api import auth
 from app.api import prayers
 from app.api import zakat
 from app.api import users
 from app.api import prayer_times
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from app.core.limiter import limiter
+from app.core.config import settings
+from app.core.middleware import SecurityHeadersMiddleware
+import sentry_sdk
 
 
 @asynccontextmanager
@@ -20,6 +27,13 @@ async def lifespan(app: FastAPI):
     """
     from sqlalchemy import text
     from app.core.database import engine
+
+    if settings.APP_ENV == "production":
+        sentry_sdk.init(
+            dsn=settings.SENTRY_DSN,
+            traces_sample_rate=0.1,
+            send_default_pii=False,
+        )
 
     print("NoorAI backend is starting up...")
 
@@ -38,16 +52,41 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    if settings.APP_ENV == "production":
+        sentry_sdk.capture_exception(exc)
+    else:
+        # In development, raise as normal so the full traceback
+        # appears in the terminal for debugging.
+        raise exc
+
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Something went wrong. Please try again later."},
+    )
+
+if settings.APP_ENV == "production":
+    cors_origins = [settings.FRONTEND_URL]
+else:
+    cors_origins = [
         "http://localhost:5173",
         "http://localhost:3000",
-    ],
+    ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.add_middleware(SecurityHeadersMiddleware)
 
 app.include_router(auth.router)
 app.include_router(prayers.router)

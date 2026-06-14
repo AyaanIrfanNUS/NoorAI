@@ -2,9 +2,10 @@
 Authentication endpoints.
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.core.limiter import limiter
 
 from app.core.database import get_db
 from app.core.deps import get_current_user
@@ -20,12 +21,14 @@ from app.models.users import User
 from app.schemas.auth import LoginRequest, RefreshRequest, RegisterResponse, TokenResponse
 from app.schemas.common import SuccessResponse
 from app.schemas.user import UserCreate, UserRead
+from app.core.constants import CALCULATION_METHOD_BY_COUNTRY, CALCULATION_METHOD_DEFAULT
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 @router.post("/register", response_model=RegisterResponse, status_code=status.HTTP_201_CREATED)
-async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
+@limiter.limit("3/minute")
+async def register(request: Request, payload: UserCreate, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == payload.email))
     existing_user = result.scalar_one_or_none()
 
@@ -35,14 +38,20 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
             detail="A user with this email already exists",
         )
 
+    calculation_method = CALCULATION_METHOD_BY_COUNTRY.get(
+        payload.location_country, CALCULATION_METHOD_DEFAULT
+    )
+
     user = User(
         email=payload.email,
         hashed_password=hash_password(payload.password),
         full_name=payload.full_name,
         location_lat=payload.location_lat,
         location_lng=payload.location_lng,
+        location_country=payload.location_country,
         currency=payload.currency,
-        calculation_method=payload.calculation_method,
+        madhab=payload.madhab,
+        calculation_method=calculation_method,
     )
     db.add(user)
     await db.commit()
@@ -59,7 +68,8 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
+@limiter.limit("5/minute")
+async def login(request: Request, payload: LoginRequest, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == payload.email))
     user = result.scalar_one_or_none()
 
@@ -83,7 +93,8 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/refresh", response_model=TokenResponse)
-async def refresh(payload: RefreshRequest):
+@limiter.limit("10/minute")
+async def refresh(request: Request, payload: RefreshRequest):
     try:
         token_payload = decode_token(payload.refresh_token)
         if token_payload.get("type") != "refresh":

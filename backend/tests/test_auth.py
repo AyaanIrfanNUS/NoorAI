@@ -3,6 +3,7 @@ Tests for authentication endpoints.
 """
 
 import pytest
+from fastapi import HTTPException
 
 
 async def test_register_success(client, unique_email):
@@ -154,3 +155,162 @@ async def test_logout_and_refresh_revoked(client, unique_email):
         json={"refresh_token": refresh_token},
     )
     assert refresh_response.status_code == 401
+
+
+async def test_login_rate_limit(client, unique_email):
+    payload = {"email": unique_email, "password": "wrongpassword"}
+
+    for _ in range(5):
+        response = await client.post("/auth/login", json=payload)
+        assert response.status_code != 429
+
+    response = await client.post("/auth/login", json=payload)
+    assert response.status_code == 429
+
+
+async def test_optional_current_user_no_token(db_session):
+    from app.core.deps import optional_current_user
+
+    result = await optional_current_user(token=None, db=db_session)
+    assert result is None
+
+
+async def test_optional_current_user_valid_token(client, db_session, unique_email):
+    from app.core.deps import optional_current_user
+
+    register_response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+    access_token = register_response.json()["tokens"]["access_token"]
+
+    result = await optional_current_user(token=access_token, db=db_session)
+    assert result is not None
+    assert result.email == unique_email
+
+
+async def test_optional_current_user_invalid_token(db_session):
+    from app.core.deps import optional_current_user
+
+    with pytest.raises(HTTPException) as exc_info:
+        await optional_current_user(token="invalid.token.here", db=db_session)
+
+    assert exc_info.value.status_code == 401
+
+
+async def test_register_password_too_short(client, unique_email):
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "short1",
+            "full_name": "Test User",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+async def test_register_email_normalized(client):
+    email_with_case_and_spaces = "  Normalize_Test@Example.COM  "
+
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": email_with_case_and_spaces,
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["email"] == "normalize_test@example.com"
+
+    second_response = await client.post(
+        "/auth/register",
+        json={
+            "email": "normalize_test@example.com",
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+
+    assert second_response.status_code == 400
+    assert "already exists" in second_response.json()["detail"]
+
+
+async def test_register_calculation_method_from_country(client, unique_email):
+    """calculation_method is derived from location_country at registration,
+    not accepted as user input."""
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+            "location_country": "SA",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["calculation_method"] == 4
+
+
+async def test_register_calculation_method_unknown_country_falls_back(client, unique_email):
+    """Countries not in the lookup table fall back to MWL (3)."""
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+            "location_country": "ZZ",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["calculation_method"] == 3
+
+
+async def test_register_calculation_method_no_country_falls_back(client, unique_email):
+    """No location_country provided falls back to MWL (3)."""
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["calculation_method"] == 3
+
+
+async def test_update_me_cannot_change_calculation_method(client, unique_email):
+    """calculation_method is system-managed and ignored if sent via PATCH."""
+    register_response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+            "location_country": "SA",
+        },
+    )
+    access_token = register_response.json()["tokens"]["access_token"]
+    original_method = register_response.json()["user"]["calculation_method"]
+    assert original_method == 4
+
+    response = await client.patch(
+        "/users/me",
+        headers={"Authorization": f"Bearer {access_token}"},
+        json={"calculation_method": 99},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["calculation_method"] == original_method

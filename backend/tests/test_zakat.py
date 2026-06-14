@@ -220,3 +220,22 @@ async def test_zakat_pricing_fallback(client, unique_email):
     data = response.json()
     assert data["is_zakat_due"] is True
     assert data["zakat_amount"] == round(10000 * 0.025, 2)
+
+
+async def test_calculate_zakat_negative_value_rejected(client, unique_email):
+    """Negative asset values are rejected at the schema level (422),
+    before reaching the pricing/calculation logic."""
+    token = await _register_and_get_token(client, unique_email)
+
+    response = await client.post(
+        "/zakat/calculate",
+        headers={"Authorization": f"Bearer {token}"},
+        json={
+            "cash_savings": -5000,
+            "gold_value": 0,
+            "silver_value": 0,
+            "business_assets": 0,
+        },
+    )
+
+    assert response.status_code == 422
