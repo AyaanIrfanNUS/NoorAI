@@ -48,7 +48,7 @@ async def test_prayer_times_today(client, unique_email):
     token = await _register_with_location(client, unique_email)
 
     with patch(
-        "app.services.prayer_times.get_prayer_times",
+        "app.api.prayer_times.get_prayer_times",
         new=AsyncMock(return_value=MOCK_PRAYER_TIMES),
     ):
         response = await client.get(
