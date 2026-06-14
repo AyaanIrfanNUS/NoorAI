@@ -21,6 +21,7 @@ from app.models.users import User
 from app.schemas.auth import LoginRequest, RefreshRequest, RegisterResponse, TokenResponse
 from app.schemas.common import SuccessResponse
 from app.schemas.user import UserCreate, UserRead
+from app.core.constants import CALCULATION_METHOD_BY_COUNTRY, CALCULATION_METHOD_DEFAULT
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -37,6 +38,10 @@ async def register(request: Request, payload: UserCreate, db: AsyncSession = Dep
             detail="A user with this email already exists",
         )
 
+    calculation_method = CALCULATION_METHOD_BY_COUNTRY.get(
+        payload.location_country, CALCULATION_METHOD_DEFAULT
+    )
+
     user = User(
         email=payload.email,
         hashed_password=hash_password(payload.password),
@@ -46,6 +51,7 @@ async def register(request: Request, payload: UserCreate, db: AsyncSession = Dep
         location_country=payload.location_country,
         currency=payload.currency,
         madhab=payload.madhab,
+        calculation_method=calculation_method,
     )
     db.add(user)
     await db.commit()
