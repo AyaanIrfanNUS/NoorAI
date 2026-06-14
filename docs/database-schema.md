@@ -11,11 +11,17 @@
 | location_city | VARCHAR(100) | NULLABLE | For prayer times (e.g. "Singapore") |
 | location_lat | FLOAT | NULLABLE | For prayer time calculation |
 | location_lng | FLOAT | NULLABLE | For prayer time calculation |
-| madhab | VARCHAR(20) | DEFAULT 'shafii' | Affects prayer time calc & fiqh answers |
+| location_country | VARCHAR(2) | NULLABLE | ISO 3166-1 alpha-2 country code; used to derive calculation_method at registration |
+| madhab | VARCHAR(10) | NOT NULL, default 'shafi' | One of hanafi/shafi/maliki/hanbali/jafari. Determines Aladhan's `school` parameter (Asr timing) |
 | created_at | TIMESTAMP | DEFAULT now() | Account creation date |
 | updated_at | TIMESTAMP | DEFAULT now() | Last profile update |
 | currency | VARCHAR(3) | DEFAULT 'USD' | ISO currency code used for zakat calculations and display |
-| calculation_method | SMALLINT | NOT NULL, default 3 | Aladhan calculation method ID (3 = Muslim World League) |
+| calculation_method | SMALLINT | NOT NULL, default 3 | Aladhan calculation method ID. System-derived from location_country at registration (Chat 5) — not user-editable |
+
+> **Note:** `first_name`/`last_name`/`location_city` in this table reflect
+> an earlier design; the implemented model currently uses a single
+> `full_name` field and does not yet store `location_city`. This
+> pre-existing drift is flagged for reconciliation in a future chat.
 
 ## prayer_logs
 | Column | Type | Constraints | Purpose |
