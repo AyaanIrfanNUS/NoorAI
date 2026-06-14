@@ -10,6 +10,9 @@ from app.api import prayers
 from app.api import zakat
 from app.api import users
 from app.api import prayer_times
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from app.core.limiter import limiter
 
 
 @asynccontextmanager
@@ -37,6 +40,9 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,

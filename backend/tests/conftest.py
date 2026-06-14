@@ -7,6 +7,7 @@ development data.
 
 import uuid
 
+import pytest
 import pytest_asyncio
 import redis.asyncio as redis
 from httpx import ASGITransport, AsyncClient
@@ -16,9 +17,15 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from app.core.config import settings
 from app.core.database import Base, get_db
 from app.main import app
+from app.core.limiter import limiter
 
 TEST_DATABASE_URL = "postgresql+asyncpg://noorai_user:noorai_pass@localhost:5432/noorai_test_db"
 
+
+@pytest.fixture(autouse=True)
+def reset_rate_limiter():
+    limiter.reset()
+    yield
 
 @pytest_asyncio.fixture(scope="function")
 async def db_session():

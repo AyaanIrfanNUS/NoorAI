@@ -154,3 +154,14 @@ async def test_logout_and_refresh_revoked(client, unique_email):
         json={"refresh_token": refresh_token},
     )
     assert refresh_response.status_code == 401
+
+
+async def test_login_rate_limit(client, unique_email):
+    payload = {"email": unique_email, "password": "wrongpassword"}
+
+    for _ in range(5):
+        response = await client.post("/auth/login", json=payload)
+        assert response.status_code != 429
+
+    response = await client.post("/auth/login", json=payload)
+    assert response.status_code == 429
