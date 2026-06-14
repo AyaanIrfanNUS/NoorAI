@@ -3,6 +3,7 @@ Tests for authentication endpoints.
 """
 
 import pytest
+from fastapi import HTTPException
 
 
 async def test_register_success(client, unique_email):
@@ -165,3 +166,37 @@ async def test_login_rate_limit(client, unique_email):
 
     response = await client.post("/auth/login", json=payload)
     assert response.status_code == 429
+
+
+async def test_optional_current_user_no_token(db_session):
+    from app.core.deps import optional_current_user
+
+    result = await optional_current_user(token=None, db=db_session)
+    assert result is None
+
+
+async def test_optional_current_user_valid_token(client, db_session, unique_email):
+    from app.core.deps import optional_current_user
+
+    register_response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+    access_token = register_response.json()["tokens"]["access_token"]
+
+    result = await optional_current_user(token=access_token, db=db_session)
+    assert result is not None
+    assert result.email == unique_email
+
+
+async def test_optional_current_user_invalid_token(db_session):
+    from app.core.deps import optional_current_user
+
+    with pytest.raises(HTTPException) as exc_info:
+        await optional_current_user(token="invalid.token.here", db=db_session)
+
+    assert exc_info.value.status_code == 401
