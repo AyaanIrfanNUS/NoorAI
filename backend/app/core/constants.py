@@ -73,3 +73,14 @@ CALCULATION_METHOD_BY_COUNTRY: dict[str, int] = {
 
 # Fallback for unlisted countries
 CALCULATION_METHOD_DEFAULT = 3  # Muslim World League (MWL)
+
+
+# Sanity check: every method ID referenced by the country lookup table
+# (and the fallback default) must be a method this app actually
+# supports. Runs at import time so a bad mapping fails loudly at
+# startup rather than surfacing only when an affected user registers.
+assert CALCULATION_METHOD_DEFAULT in VALID_CALCULATION_METHODS
+assert all(
+    method in VALID_CALCULATION_METHODS
+    for method in CALCULATION_METHOD_BY_COUNTRY.values()
+)
