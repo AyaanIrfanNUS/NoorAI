@@ -241,3 +241,76 @@ async def test_register_email_normalized(client):
 
     assert second_response.status_code == 400
     assert "already exists" in second_response.json()["detail"]
+
+
+async def test_register_calculation_method_from_country(client, unique_email):
+    """calculation_method is derived from location_country at registration,
+    not accepted as user input."""
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+            "location_country": "SA",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["calculation_method"] == 4
+
+
+async def test_register_calculation_method_unknown_country_falls_back(client, unique_email):
+    """Countries not in the lookup table fall back to MWL (3)."""
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+            "location_country": "ZZ",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["calculation_method"] == 3
+
+
+async def test_register_calculation_method_no_country_falls_back(client, unique_email):
+    """No location_country provided falls back to MWL (3)."""
+    response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.json()["user"]["calculation_method"] == 3
+
+
+async def test_update_me_cannot_change_calculation_method(client, unique_email):
+    """calculation_method is system-managed and ignored if sent via PATCH."""
+    register_response = await client.post(
+        "/auth/register",
+        json={
+            "email": unique_email,
+            "password": "testpass123",
+            "full_name": "Test User",
+            "location_country": "SA",
+        },
+    )
+    access_token = register_response.json()["tokens"]["access_token"]
+    original_method = register_response.json()["user"]["calculation_method"]
+    assert original_method == 4
+
+    response = await client.patch(
+        "/users/me",
+        headers={"Authorization": f"Bearer {access_token}"},
+        json={"calculation_method": 99},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["calculation_method"] == original_method
