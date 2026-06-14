@@ -9,6 +9,13 @@ from pydantic import BaseModel, EmailStr, ConfigDict, Field, field_validator
 
 
 class UserCreate(BaseModel):
+    """Payload for new user registration.
+
+    Email is normalized to lowercase with surrounding whitespace
+    stripped, to prevent duplicate accounts differing only by case
+    or formatting. Password must be at least 8 characters.
+    """
+
     email: EmailStr
     password: str = Field(min_length=8)
     full_name: str

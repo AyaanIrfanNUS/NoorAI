@@ -5,14 +5,20 @@ Zakat calculation schemas.
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ZakatInput(BaseModel):
-    cash_savings: float = 0
-    gold_value: float = 0
-    silver_value: float = 0
-    business_assets: float = 0
+    """Asset values submitted for a Zakat calculation.
+
+    All fields must be non-negative. The upper bound (1 trillion) is a
+    sanity ceiling to reject malformed or absurd input values.
+    """
+
+    cash_savings: float = Field(default=0, ge=0, le=1_000_000_000_000)
+    gold_value: float = Field(default=0, ge=0, le=1_000_000_000_000)
+    silver_value: float = Field(default=0, ge=0, le=1_000_000_000_000)
+    business_assets: float = Field(default=0, ge=0, le=1_000_000_000_000)
 
 
 class ZakatResult(BaseModel):
