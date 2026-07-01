@@ -57,8 +57,8 @@ TOOL_FUNCTIONS = {
 }
 
 # ── Response Thresholds ─────────────────────────────────────────────────────────────
-MAX_TOKENS = 5000 # holds the maximum tokens allowed in the output response
-SIMILARITY_THRESHOLD = 0.5 # holds the similarity threshold before any web search go through tavily
+MAX_TOKENS = 5000  # holds the maximum tokens allowed in the output response
+SIMILARITY_THRESHOLD = 0.5  # holds the similarity threshold before any web search go through tavily
 
 # ── Connection Thresholds ─────────────────────────────────────────────────────────────
 MIN_CONN = 2
@@ -80,9 +80,9 @@ CONNECTION_POOL = psycopg2_pool.ThreadedConnectionPool(
 def _get_connection():
     return CONNECTION_POOL.getconn()
 
+
 def _release_connection(conn):
     CONNECTION_POOL.putconn(conn)
-
 
 
 def build_context_string(chunks: list[dict]) -> str:
@@ -90,117 +90,123 @@ def build_context_string(chunks: list[dict]) -> str:
     return "\n\n".join(parts)
 
 
+def _build_sources(chunks: list[dict]) -> list[dict]:
+    # Labels each retrieved chunk by how it was matched, so the frontend can
+    # distinguish scored semantic matches, exact lookups, and live web results.
+    sources = []
+    for c in chunks:
+        if c.get("similarity") is not None:
+            sources.append({"source_file": c["source_file"], "similarity": round(c["similarity"], 3)})
+        elif c.get("metadata", {}).get("source_type") == "web":
+            sources.append({"source_file": c["source_file"], "similarity": "web_source"})
+        else:
+            sources.append({"source_file": c["source_file"], "similarity": "direct_lookup"})
+    return sources
+
+
+def _prepare_context(
+    question: str, user: dict | None, history: list[dict] | None, conn
+) -> tuple[list[dict], list[str]]:
+    # Runs tool selection and retrieval, returning the chunks and tool names
+    # used. Shared by both the blocking and streaming answer paths, since
+    # tool selection must always complete before any answer generation begins.
+    all_chunks = []
+    tools_used = []
+
+    for tool_spec in _mandatory_tools(question):
+        if ":" in tool_spec:
+            tool_name, tool_arg = tool_spec.split(":", 1)
+        else:
+            tool_name, tool_arg = tool_spec, None
+
+        tool_fn = TOOL_FUNCTIONS.get(tool_name)
+        if not tool_fn:
+            continue
+
+        if tool_name == "search_quran_by_surah":
+            chunks = tool_fn({"surah_query": tool_arg}, conn)
+        elif tool_name == "search_knowledge_base":
+            chunks = tool_fn({"query": question}, conn)
+        elif tool_name == "search_duas":
+            chunks = tool_fn({"situation": question}, conn)
+        else:
+            chunks = []
+
+        if chunks:
+            all_chunks.extend(chunks)
+            if tool_name not in tools_used:
+                tools_used.append(tool_name)
+
+    # tool_choice stays required on every turn so retrieval is never
+    # silently skipped. History is included so the model can select
+    # tools with awareness of what was already discussed.
+    response = CEREBRAS_CLIENT.chat.completions.create(
+        model=CEREBRAS_MODEL,
+        messages=[
+            {
+                "role": "system",
+                "content": (
+                    "You are an Islamic knowledge assistant. "
+                    "Use the most relevant tool(s) to find information. "
+                    "You may call multiple tools if the question spans multiple topics. "
+                    "Call no_retrieval_needed only for pure follow-ups with no new topic — "
+                    "for example, after discussing a dua, 'shorten that' needs no_retrieval_needed, "
+                    "but 'are there halal restaurants near me' is a new topic and must use a "
+                    "retrieval tool, even in the same conversation. "
+                    "When calling a retrieval tool, phrase its query as a self-contained "
+                    "request, resolving references to earlier context."
+                ),
+            },
+            *_history_as_messages(history),
+            {"role": "user", "content": question},
+        ],
+        tools=TOOLS,
+        tool_choice="required",
+        max_tokens=500,
+        temperature=0.1,
+    )
+
+    choice = response.choices[0].message
+    # Set when the model explicitly signals no new retrieval is needed,
+    # so the web search fallback is not triggered on an empty result set.
+    skip_retrieval = False
+
+    for tool_call in (choice.tool_calls or []):
+        tool_name = tool_call.function.name
+
+        if tool_name == "no_retrieval_needed":
+            skip_retrieval = True
+            continue
+
+        tool_args = json.loads(tool_call.function.arguments)
+
+        if tool_name in tools_used:
+            continue
+
+        tool_fn = TOOL_FUNCTIONS.get(tool_name)
+        if not tool_fn:
+            continue
+
+        chunks = tool_fn(tool_args, conn)
+        if chunks:
+            all_chunks.extend(chunks)
+            tools_used.append(tool_name)
+
+    if _needs_web_search(all_chunks) and not skip_retrieval:
+        location = user.get("location_country") if user else None
+        web_chunks = search_web(question, TAVILY_CLIENT, location=location)
+        if web_chunks:
+            all_chunks.extend(web_chunks)
+            tools_used.append("search_web")
+
+    return all_chunks, tools_used
+
+
 def ask(question: str, user: dict | None = None, history: list[dict] | None = None) -> dict:
     conn = _get_connection()
 
     try:
-        # ── Pre-run mandatory tools ───────────────────────────────────────────
-        all_chunks = []
-        tools_used = []
-
-        for tool_spec in _mandatory_tools(question):
-            if ":" in tool_spec:
-                tool_name, tool_arg = tool_spec.split(":", 1)
-            else:
-                tool_name, tool_arg = tool_spec, None
-
-            tool_fn = TOOL_FUNCTIONS.get(tool_name)
-            if not tool_fn:
-                continue
-
-            if tool_name == "search_quran_by_surah":
-                chunks = tool_fn({"surah_query": tool_arg}, conn)
-            elif tool_name == "search_knowledge_base":
-                chunks = tool_fn({"query": question}, conn)
-            elif tool_name == "search_duas":
-                chunks = tool_fn({"situation": question}, conn)
-            else:
-                chunks = []
-
-            if chunks:
-                all_chunks.extend(chunks)
-                if tool_name not in tools_used:
-                    tools_used.append(tool_name)
-
-        # ── Call 1: LLM picks additional tool(s) if needed ───────────────────
-        # tool_choice stays required on every turn so retrieval is never
-        # silently skipped. History is included so the model can select
-        # tools with awareness of what was already discussed.
-        response = CEREBRAS_CLIENT.chat.completions.create(
-            model=CEREBRAS_MODEL,
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are an Islamic knowledge assistant. "
-                        "Use the most relevant tool(s) to find information. "
-                        "You may call multiple tools if the question spans multiple topics. "
-                        "Call no_retrieval_needed only for pure follow-ups with no new topic — "
-                        "for example, after discussing a dua, 'shorten that' needs no_retrieval_needed, "
-                        "but 'are there halal restaurants near me' is a new topic and must use a "
-                        "retrieval tool, even in the same conversation. "
-                        "When calling a retrieval tool, phrase its query as a self-contained "
-                        "request, resolving references to earlier context."
-                    ),
-                },
-                *_history_as_messages(history),
-                {"role": "user", "content": question},
-            ],
-            tools=TOOLS,
-            tool_choice="required",
-            max_tokens=500,
-            temperature = 0.1,
-        )
-
-        choice = response.choices[0].message
-        tool_results_for_messages = []
-        # Set when the model explicitly signals no new retrieval is needed,
-        # so the web search fallback is not triggered on an empty result set.
-        skip_retrieval = False
-
-        for tool_call in (choice.tool_calls or []):
-            tool_name = tool_call.function.name
-
-            if tool_name == "no_retrieval_needed":
-                skip_retrieval = True
-                tool_results_for_messages.append({
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": "Answering from conversation history.",
-                })
-                continue
-
-            tool_args = json.loads(tool_call.function.arguments)
-
-            if tool_name in tools_used:
-                tool_results_for_messages.append({
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": "Already retrieved.",
-                })
-                continue
-
-            tool_fn = TOOL_FUNCTIONS.get(tool_name)
-            if not tool_fn:
-                continue
-
-            chunks = tool_fn(tool_args, conn)
-            if chunks:
-                all_chunks.extend(chunks)
-                tools_used.append(tool_name)
-
-            tool_results_for_messages.append({
-                "role": "tool",
-                "tool_call_id": tool_call.id,
-                "content": build_context_string(chunks) if chunks else "No results found.",
-            })
-
-        if _needs_web_search(all_chunks) and not skip_retrieval:
-            location = user.get("location_country") if user else None
-            web_chunks = search_web(question, TAVILY_CLIENT, location=location)
-            if web_chunks:
-                all_chunks.extend(web_chunks)
-                tools_used.append("search_web")
+        all_chunks, tools_used = _prepare_context(question, user, history, conn)
 
         # No chunks and no history means there is genuinely nothing to answer
         # from. If history exists, the model may still be able to answer from
@@ -221,26 +227,14 @@ def ask(question: str, user: dict | None = None, history: list[dict] | None = No
             history=_build_history_string(history),
         )
 
-        messages = [{"role": "user", "content": question}]
-        messages.append(choice.model_dump())
-        messages.extend(tool_results_for_messages)
-        messages.append({"role": "user", "content": prompt})
-
         final_response = CEREBRAS_CLIENT.chat.completions.create(
             model=CEREBRAS_MODEL,
-            messages=messages,
+            messages=[{"role": "user", "content": prompt}],
             max_tokens=MAX_TOKENS,
         )
 
         answer = final_response.choices[0].message.content
-        sources = []
-        for c in all_chunks:
-            if c.get("similarity") is not None:
-                sources.append({"source_file": c["source_file"], "similarity": round(c["similarity"], 3)})
-            elif c.get("metadata", {}).get("source_type") == "web":
-                sources.append({"source_file": c["source_file"], "similarity": "web_source"})
-            else:
-                sources.append({"source_file": c["source_file"], "similarity": "direct_lookup"})
+        sources = _build_sources(all_chunks)
 
         return {"answer": answer, "sources": sources, "tools_used": tools_used}
 
