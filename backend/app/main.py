@@ -11,6 +11,7 @@ from app.api import prayers
 from app.api import zakat
 from app.api import users
 from app.api import prayer_times
+from app.api import chat
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from app.core.limiter import limiter
@@ -93,6 +94,7 @@ app.include_router(prayers.router)
 app.include_router(zakat.router)
 app.include_router(users.router)
 app.include_router(prayer_times.router)
+app.include_router(chat.router)
 
 
 @app.get("/health")
