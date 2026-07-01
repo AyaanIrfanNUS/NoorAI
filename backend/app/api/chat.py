@@ -4,6 +4,11 @@ Chat endpoints backed by the RAG agent.
 
 import uuid
 
+import json
+from fastapi.responses import StreamingResponse
+from app.ai.agents.rag_agent import ask_stream
+from app.core.ai_response_streaming import async_generator_from_sync
+
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -119,6 +124,104 @@ async def send_message(
         tools_used=result["tools_used"],
         session_id=session.id,
     )
+
+
+@router.post("/message/stream")
+@limiter.limit("10/minute")
+async def send_message_stream(
+    request: Request,
+    payload: ChatMessageCreate,
+    current_user: User | None = Depends(optional_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    # Session and history are prepared up front, before any streaming starts,
+    # using the same session reuse/creation logic as the non-streaming endpoint.
+    session = None
+    user_context = None
+    history = None
+
+    if current_user is not None:
+        if payload.session_id is not None:
+            result = await db.execute(
+                select(ChatSession).where(
+                    ChatSession.id == payload.session_id,
+                    ChatSession.user_id == current_user.id,
+                )
+            )
+            session = result.scalar_one_or_none()
+
+        if session is None:
+            session = ChatSession(
+                user_id=current_user.id,
+                title=payload.question[:SESSION_TITLE_MAX_LENGTH],
+            )
+            db.add(session)
+            await db.commit()
+            await db.refresh(session)
+
+        # The user's question is saved before generation begins, so it is
+        # not lost if the agent call fails partway through.
+        user_message = ChatMessage(session_id=session.id, role="user", content=payload.question)
+        db.add(user_message)
+        await db.commit()
+        await db.refresh(user_message)
+
+        history_result = await db.execute(
+            select(ChatMessage)
+            .where(ChatMessage.session_id == session.id, ChatMessage.id != user_message.id)
+            .order_by(ChatMessage.created_at.desc())
+            .limit(HISTORY_WINDOW)
+        )
+        history_messages = list(reversed(history_result.scalars().all()))
+        history = [{"role": m.role, "content": m.content} for m in history_messages]
+
+        user_context = {
+            "name": current_user.full_name,
+            "madhab": current_user.madhab,
+            "location_country": current_user.location_country,
+        }
+
+    async def event_generator():
+        # Tokens are relayed to the client as they arrive and simultaneously
+        # accumulated here, since the full answer is only persisted once
+        # streaming completes, not written token by token.
+        full_answer = ""
+        final_sources = []
+        final_tools_used = []
+
+        async for chunk in async_generator_from_sync(ask_stream, payload.question, user_context, history):
+            if chunk["type"] == "token":
+                full_answer += chunk["content"]
+                yield f"data: {json.dumps({'token': chunk['content']})}\n\n"
+            elif chunk["type"] == "done":
+                final_sources = chunk["sources"]
+                final_tools_used = chunk["tools_used"]
+
+        if current_user is not None and session is not None:
+            assistant_message = ChatMessage(
+                session_id=session.id,
+                role="assistant",
+                content=full_answer,
+                sources=final_sources,
+            )
+            db.add(assistant_message)
+            await db.execute(
+                update(ChatSession).where(ChatSession.id == session.id).values(updated_at=func.now())
+            )
+            await db.commit()
+
+        # Sent last so the client can distinguish "still streaming" from
+        # "response complete", along with metadata not known until the
+        # full answer has been generated.
+        done_payload = {
+            "done": True,
+            "sources": final_sources,
+            "tools_used": final_tools_used,
+            "session_id": str(session.id) if session else None,
+        }
+        yield f"data: {json.dumps(done_payload)}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 
 @router.get("/sessions", response_model=list[ChatSessionListItem])

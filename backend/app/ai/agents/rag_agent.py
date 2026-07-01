@@ -242,6 +242,47 @@ def ask(question: str, user: dict | None = None, history: list[dict] | None = No
         _release_connection(conn)
 
 
+def ask_stream(question: str, user: dict | None = None, history: list[dict] | None = None):
+    # Generator variant of ask().
+    # Streams the final answer token by token instead of returning it as a
+    # single string. Tool selection and retrieval run the same as ask().
+    conn = _get_connection()
+
+    try:
+        all_chunks, tools_used = _prepare_context(question, user, history, conn)
+
+        if not all_chunks and not history:
+            yield {"type": "token", "content": "I wasn't able to find relevant information for that question."}
+            yield {"type": "done", "sources": [], "tools_used": tools_used}
+            return
+
+        combined_context = build_context_string(all_chunks)
+        prompt = SYSTEM_PROMPT_TEMPLATE.format(
+            context=combined_context,
+            question=question,
+            user_context=_build_user_context(user),
+            history=_build_history_string(history),
+        )
+
+        stream = CEREBRAS_CLIENT.chat.completions.create(
+            model=CEREBRAS_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=MAX_TOKENS,
+            stream=True,
+        )
+
+        for chunk in stream:
+            token = chunk.choices[0].delta.content or ""
+            if token:
+                yield {"type": "token", "content": token}
+
+        sources = _build_sources(all_chunks)
+        yield {"type": "done", "sources": sources, "tools_used": tools_used}
+
+    finally:
+        _release_connection(conn)
+
+
 # lightweight Python pre-check before Call 1 that forces certain tools to always run together
 def _mandatory_tools(question: str) -> list[str]:
     mandatory = []
