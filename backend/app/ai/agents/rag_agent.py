@@ -89,7 +89,7 @@ def build_context_string(chunks: list[dict]) -> str:
     return "\n\n".join(parts)
 
 
-def ask(question: str) -> dict:
+def ask(question: str, user: dict | None = None, history: list[dict] | None = None) -> dict:
     conn = _get_connection()
 
     try:
@@ -172,7 +172,8 @@ def ask(question: str) -> dict:
             })
 
         if _needs_web_search(all_chunks):
-            web_chunks = search_web(question, TAVILY_CLIENT)
+            location = user.get("location_country") if user else None
+            web_chunks = search_web(question, TAVILY_CLIENT, location=location)
             if web_chunks:
                 all_chunks.extend(web_chunks)
                 tools_used.append("search_web")
@@ -189,8 +190,8 @@ def ask(question: str) -> dict:
         prompt = SYSTEM_PROMPT_TEMPLATE.format(
             context=combined_context,
             question=question,
-            user_context="You are speaking with an anonymous guest user. Be warm and helpful, but do not assume any personal details about them.",
-            history="",
+            user_context=_build_user_context(user),
+            history=_build_history_string(history),
         )
 
         messages = [{"role": "user", "content": question}]
@@ -236,6 +237,31 @@ def _mandatory_tools(question: str) -> list[str]:
         mandatory.append("search_knowledge_base")
 
     return mandatory
+
+
+def _build_user_context(user: dict | None) -> str:
+    if not user:
+        return "The user is anonymous. Do not assume any personal details about them."
+
+    parts = []
+    if user.get("name"):
+        parts.append(f"The user's name is {user['name']}.")
+    if user.get("madhab"):
+        parts.append(f"They follow the {user['madhab']} madhab; consider this for fiqh-related questions.")
+
+    return " ".join(parts) if parts else "The user is authenticated but has no profile details set."
+
+
+def _build_history_string(history: list[dict] | None) -> str:
+    if not history:
+        return ""
+
+    lines = ["Previous conversation:"]
+    for message in history:
+        speaker = "User" if message["role"] == "user" else "NoorAI"
+        lines.append(f"{speaker}: {message['content']}")
+
+    return "\n".join(lines)
 
 
 def _needs_web_search(chunks: list[dict]) -> bool:
