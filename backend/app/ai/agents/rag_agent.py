@@ -28,6 +28,7 @@ from app.ai.tools.search_duas_tool import (
     search_duas,
     TOOL_SCHEMA as DUAS_SCHEMA,
 )
+from app.ai.tools.no_retrieval_tool import TOOL_SCHEMA as NO_RETRIEVAL_SCHEMA
 
 # ── Environment ───────────────────────────────────────────────────────────────
 load_dotenv(dotenv_path=Path(__file__).parent.parent.parent.parent.parent / ".env")
@@ -47,7 +48,7 @@ PROMPT_PATH = Path(__file__).parent.parent / "prompts" / "chat_system.txt"
 SYSTEM_PROMPT_TEMPLATE = PROMPT_PATH.read_text(encoding="utf-8")
 
 # ── Tool registry ─────────────────────────────────────────────────────────────
-TOOLS = [QURAN_SCHEMA, KB_SCHEMA, DUAS_SCHEMA]
+TOOLS = [QURAN_SCHEMA, KB_SCHEMA, DUAS_SCHEMA, NO_RETRIEVAL_SCHEMA]
 
 TOOL_FUNCTIONS = {
     "search_quran_by_surah": lambda args, conn: search_quran_by_surah(args["surah_query"], conn),
@@ -122,6 +123,9 @@ def ask(question: str, user: dict | None = None, history: list[dict] | None = No
                     tools_used.append(tool_name)
 
         # ── Call 1: LLM picks additional tool(s) if needed ───────────────────
+        # tool_choice stays required on every turn so retrieval is never
+        # silently skipped. History is included so the model can select
+        # tools with awareness of what was already discussed.
         response = CEREBRAS_CLIENT.chat.completions.create(
             model=CEREBRAS_MODEL,
             messages=[
@@ -130,25 +134,45 @@ def ask(question: str, user: dict | None = None, history: list[dict] | None = No
                     "content": (
                         "You are an Islamic knowledge assistant. "
                         "Use the most relevant tool(s) to find information. "
-                        "You may call multiple tools if the question spans multiple topics."
+                        "You may call multiple tools if the question spans multiple topics. "
+                        "Call no_retrieval_needed only for pure follow-ups with no new topic — "
+                        "for example, after discussing a dua, 'shorten that' needs no_retrieval_needed, "
+                        "but 'are there halal restaurants near me' is a new topic and must use a "
+                        "retrieval tool, even in the same conversation. "
+                        "When calling a retrieval tool, phrase its query as a self-contained "
+                        "request, resolving references to earlier context."
                     ),
                 },
+                *_history_as_messages(history),
                 {"role": "user", "content": question},
             ],
             tools=TOOLS,
             tool_choice="required",
             max_tokens=500,
+            temperature = 0.1,
         )
 
         choice = response.choices[0].message
         tool_results_for_messages = []
+        # Set when the model explicitly signals no new retrieval is needed,
+        # so the web search fallback is not triggered on an empty result set.
+        skip_retrieval = False
 
-        for tool_call in choice.tool_calls:
+        for tool_call in (choice.tool_calls or []):
             tool_name = tool_call.function.name
+
+            if tool_name == "no_retrieval_needed":
+                skip_retrieval = True
+                tool_results_for_messages.append({
+                    "role": "tool",
+                    "tool_call_id": tool_call.id,
+                    "content": "Answering from conversation history.",
+                })
+                continue
+
             tool_args = json.loads(tool_call.function.arguments)
 
             if tool_name in tools_used:
-                # Already ran this tool — skip but still add to message history
                 tool_results_for_messages.append({
                     "role": "tool",
                     "tool_call_id": tool_call.id,
@@ -171,14 +195,17 @@ def ask(question: str, user: dict | None = None, history: list[dict] | None = No
                 "content": build_context_string(chunks) if chunks else "No results found.",
             })
 
-        if _needs_web_search(all_chunks):
+        if _needs_web_search(all_chunks) and not skip_retrieval:
             location = user.get("location_country") if user else None
             web_chunks = search_web(question, TAVILY_CLIENT, location=location)
             if web_chunks:
                 all_chunks.extend(web_chunks)
                 tools_used.append("search_web")
 
-        if not all_chunks:
+        # No chunks and no history means there is genuinely nothing to answer
+        # from. If history exists, the model may still be able to answer from
+        # conversation context alone, so processing continues to Call 2.
+        if not all_chunks and not history:
             return {
                 "answer": "I wasn't able to find relevant information for that question.",
                 "sources": [],
@@ -262,6 +289,15 @@ def _build_history_string(history: list[dict] | None) -> str:
         lines.append(f"{speaker}: {message['content']}")
 
     return "\n".join(lines)
+
+
+def _history_as_messages(history: list[dict] | None) -> list[dict]:
+    # Formats prior turns as chat messages for the tool-selection call,
+    # so the model can recognise follow-up questions that need no new
+    # retrieval (e.g. requests to rephrase or shorten a prior answer).
+    if not history:
+        return []
+    return [{"role": m["role"], "content": m["content"]} for m in history]
 
 
 def _needs_web_search(chunks: list[dict]) -> bool:
