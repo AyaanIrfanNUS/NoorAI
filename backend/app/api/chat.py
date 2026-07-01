@@ -189,13 +189,21 @@ async def send_message_stream(
         final_sources = []
         final_tools_used = []
 
-        async for chunk in async_generator_from_sync(ask_stream, payload.question, user_context, history):
-            if chunk["type"] == "token":
-                full_answer += chunk["content"]
-                yield f"data: {json.dumps({'token': chunk['content']})}\n\n"
-            elif chunk["type"] == "done":
-                final_sources = chunk["sources"]
-                final_tools_used = chunk["tools_used"]
+        try:
+            async for chunk in async_generator_from_sync(ask_stream, payload.question, user_context, history):
+                if chunk["type"] == "token":
+                    full_answer += chunk["content"]
+                    yield f"data: {json.dumps({'token': chunk['content']})}\n\n"
+                elif chunk["type"] == "done":
+                    final_sources = chunk["sources"]
+                    final_tools_used = chunk["tools_used"]
+        except Exception:
+            # A partial answer is not persisted; the client is told the
+            # stream failed so it can retry rather than treat a cut-off
+            # answer as complete.
+            error_payload = {"error": "The assistant is temporarily unavailable. Please try again."}
+            yield f"data: {json.dumps(error_payload)}\n\n"
+            return
 
         if current_user is not None and session is not None:
             assistant_message = ChatMessage(
