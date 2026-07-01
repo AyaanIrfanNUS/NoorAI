@@ -9,7 +9,8 @@ from pydantic import BaseModel, ConfigDict
 
 
 class ChatMessageCreate(BaseModel):
-    content: str
+    question: str
+    session_id: uuid.UUID | None = None
 
 
 class ChatMessageRead(BaseModel):
@@ -23,6 +24,17 @@ class ChatMessageRead(BaseModel):
     created_at: datetime
 
 
+class ChatResponse(BaseModel):
+    """
+    Shape returned by POST /chat/message for both anonymous and 
+    authenticated users; session_id is None for anonymous requests.
+    """
+    answer: str
+    sources: list[dict]
+    tools_used: list[str]
+    session_id: uuid.UUID | None = None
+
+
 class ChatSessionRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -31,3 +43,18 @@ class ChatSessionRead(BaseModel):
     title: str
     created_at: datetime
     updated_at: datetime
+
+
+class ChatSessionListItem(BaseModel):
+    """
+    Summary shape for GET /chat/sessions, includes derived 
+    fields not present on the ChatSession model itself.
+    """
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    title: str
+    created_at: datetime
+    updated_at: datetime
+    message_count: int
+    last_message_preview: str | None = None
