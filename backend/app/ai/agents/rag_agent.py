@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from cerebras.cloud.sdk import Cerebras
 import psycopg2
+from psycopg2 import pool as psycopg2_pool
 from app.data.islamic_mappings import DUA_KEYWORDS, PROPHET_SURAH_MAP, STORY_KEYWORDS
 from tavily import TavilyClient
 from app.ai.tools.search_web_tool import search_web
@@ -58,12 +59,29 @@ TOOL_FUNCTIONS = {
 MAX_TOKENS = 5000 # holds the maximum tokens allowed in the output response
 SIMILARITY_THRESHOLD = 0.5 # holds the similarity threshold before any web search go through tavily
 
+# ── Connection Thresholds ─────────────────────────────────────────────────────────────
+MIN_CONN = 2
+MAX_CONN = 10
+
+
+_DB_URL_NORMALIZED = DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://").replace(
+    "postgresql+psycopg2://", "postgresql://"
+)
+
+# Connection pool shared across concurrent requests; maxconn bounds usage against the database's connection limit.
+CONNECTION_POOL = psycopg2_pool.ThreadedConnectionPool(
+    minconn=MIN_CONN,
+    maxconn=MAX_CONN,
+    dsn=_DB_URL_NORMALIZED,
+)
+
 
 def _get_connection():
-    url = DATABASE_URL.replace("postgresql+asyncpg://", "postgresql://").replace(
-        "postgresql+psycopg2://", "postgresql://"
-    )
-    return psycopg2.connect(url)
+    return CONNECTION_POOL.getconn()
+
+def _release_connection(conn):
+    CONNECTION_POOL.putconn(conn)
+
 
 
 def build_context_string(chunks: list[dict]) -> str:
@@ -199,7 +217,7 @@ def ask(question: str) -> dict:
         return {"answer": answer, "sources": sources, "tools_used": tools_used}
 
     finally:
-        conn.close()
+        _release_connection(conn)
 
 
 # lightweight Python pre-check before Call 1 that forces certain tools to always run together
