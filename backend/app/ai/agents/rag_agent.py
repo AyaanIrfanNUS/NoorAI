@@ -168,7 +168,12 @@ def ask(question: str) -> dict:
 
         # ── Call 2: LLM writes final answer ───────────────────────────────────
         combined_context = build_context_string(all_chunks)
-        prompt = SYSTEM_PROMPT_TEMPLATE.format(context=combined_context, question=question)
+        prompt = SYSTEM_PROMPT_TEMPLATE.format(
+            context=combined_context,
+            question=question,
+            user_context="You are speaking with an anonymous guest user. Be warm and helpful, but do not assume any personal details about them.",
+            history="",
+        )
 
         messages = [{"role": "user", "content": question}]
         messages.append(choice.model_dump())
