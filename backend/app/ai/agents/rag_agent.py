@@ -12,6 +12,8 @@ from sentence_transformers import SentenceTransformer
 from cerebras.cloud.sdk import Cerebras
 import psycopg2
 from app.data.islamic_mappings import DUA_KEYWORDS, PROPHET_SURAH_MAP, STORY_KEYWORDS
+from tavily import TavilyClient
+from app.ai.tools.search_web_tool import search_web
 
 from app.ai.tools.search_quran_by_surah_tool import (
     search_quran_by_surah,
@@ -32,15 +34,16 @@ load_dotenv(dotenv_path=Path(__file__).parent.parent.parent.parent.parent / ".en
 DATABASE_URL = os.getenv("DATABASE_URL")
 CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY")
 CEREBRAS_MODEL = os.getenv("CEREBRAS_MODEL")
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
 # ── Shared clients ────────────────────────────────────────────────────────────
 EMBEDDER = SentenceTransformer("paraphrase-multilingual-mpnet-base-v2")
 CEREBRAS_CLIENT = Cerebras(api_key=CEREBRAS_API_KEY)
+TAVILY_CLIENT = TavilyClient(api_key=TAVILY_API_KEY)
 
 # ── Prompt ────────────────────────────────────────────────────────────────────
 PROMPT_PATH = Path(__file__).parent.parent / "prompts" / "chat_system.txt"
 SYSTEM_PROMPT_TEMPLATE = PROMPT_PATH.read_text(encoding="utf-8")
-MAX_TOKENS = 5000
 
 # ── Tool registry ─────────────────────────────────────────────────────────────
 TOOLS = [QURAN_SCHEMA, KB_SCHEMA, DUAS_SCHEMA]
@@ -50,6 +53,10 @@ TOOL_FUNCTIONS = {
     "search_knowledge_base": lambda args, conn: search_knowledge_base(args["query"], conn, EMBEDDER),
     "search_duas": lambda args, conn: search_duas(args["situation"], conn, EMBEDDER),
 }
+
+# ── Response Thresholds ─────────────────────────────────────────────────────────────
+MAX_TOKENS = 5000 # holds the maximum tokens allowed in the output response
+SIMILARITY_THRESHOLD = 0.5 # holds the similarity threshold before any web search go through tavily
 
 
 def _get_connection():
@@ -146,6 +153,12 @@ def ask(question: str) -> dict:
                 "content": build_context_string(chunks) if chunks else "No results found.",
             })
 
+        if _needs_web_search(all_chunks):
+            web_chunks = search_web(question, TAVILY_CLIENT)
+            if web_chunks:
+                all_chunks.extend(web_chunks)
+                tools_used.append("search_web")
+
         if not all_chunks:
             return {
                 "answer": "I wasn't able to find relevant information for that question.",
@@ -169,13 +182,14 @@ def ask(question: str) -> dict:
         )
 
         answer = final_response.choices[0].message.content
-        sources = [
-            {
-                "source_file": c["source_file"],
-                "similarity": round(c["similarity"], 3) if c.get("similarity") else "direct_lookup"
-            }
-            for c in all_chunks
-        ]
+        sources = []
+        for c in all_chunks:
+            if c.get("similarity") is not None:
+                sources.append({"source_file": c["source_file"], "similarity": round(c["similarity"], 3)})
+            elif c.get("metadata", {}).get("source_type") == "web":
+                sources.append({"source_file": c["source_file"], "similarity": "web_source"})
+            else:
+                sources.append({"source_file": c["source_file"], "similarity": "direct_lookup"})
 
         return {"answer": answer, "sources": sources, "tools_used": tools_used}
 
@@ -199,3 +213,20 @@ def _mandatory_tools(question: str) -> list[str]:
         mandatory.append("search_knowledge_base")
 
     return mandatory
+
+
+def _needs_web_search(chunks: list[dict]) -> bool:
+    """
+    Returns True if retrieved chunks are missing or too weak, meaning
+    a live web search should supplement the answer.
+    """
+    if not chunks:
+        return True
+
+    scored = [c["similarity"] for c in chunks if c.get("similarity") is not None]
+    if not scored:
+        # e.g. only direct_lookup results (surah/dua) — those are exact matches,
+        # not similarity-scored, so they don't need web backup
+        return False
+
+    return max(scored) < SIMILARITY_THRESHOLD
