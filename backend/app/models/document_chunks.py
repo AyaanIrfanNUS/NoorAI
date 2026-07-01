@@ -20,7 +20,7 @@ class DocumentChunk(Base):
         UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
     )
     content: Mapped[str] = mapped_column(Text, nullable=False)
-    embedding: Mapped[list[float]] = mapped_column(Vector(384), nullable=False)
+    embedding: Mapped[list[float]] = mapped_column(Vector(768), nullable=False)
     source_file: Mapped[str] = mapped_column(String(255), nullable=False)
     chunk_index: Mapped[int] = mapped_column(Integer, nullable=False)
     chunk_metadata: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
