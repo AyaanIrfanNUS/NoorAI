@@ -73,7 +73,7 @@
     background: rgba(201,168,76,.2);
     border-radius: 9px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
+    font-size: 18px; color: var(--gold);
   }
   .topnav-name {
     font-size: 18px; font-weight: 700; color: #fff;
@@ -100,7 +100,7 @@
     border-radius: 50%;
     background: rgba(255,255,255,.1);
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px; cursor: pointer;
+    font-size: 16px; cursor: pointer; color: #fff;
   }
   .topnav-avatar {
     width: 36px; height: 36px; border-radius: 50%;
@@ -147,6 +147,7 @@
   .field input:focus { border-color: var(--green); }
   .field input::placeholder { color: var(--text-light); }
   .field textarea { height: 100px; padding: 12px 16px; resize: none; }
+  .field-helper { font-size: 12px; color: var(--text-muted); margin-top: -2px; }
 
   /* ─── CARD ─── */
   .card {
@@ -181,16 +182,18 @@
     position: relative; overflow: hidden;
   }
   .login-left::before {
-    content: '☽';
+    content: '';
     position: absolute; right: -20px; top: 40%;
-    font-size: 280px; opacity: .05; line-height: 1;
+    width: 280px; height: 280px; opacity: .05;
     transform: translateY(-50%);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
   }
   .login-brand { display: flex; align-items: center; gap: 12px; margin-bottom: auto; }
   .login-brand-icon {
     width: 44px; height: 44px; border-radius: 11px;
     background: rgba(201,168,76,.2);
-    display: flex; align-items: center; justify-content: center; font-size: 22px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--gold);
   }
   .login-brand-name { font-size: 22px; font-weight: 700; color: #fff; }
   .login-brand-ar {
@@ -276,7 +279,13 @@
     display: flex; align-items: center; justify-content: space-between;
     position: relative; overflow: hidden;
   }
-  .greeting-banner::after { content: '☽'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); font-size: 80px; opacity: .1; }
+  .greeting-banner::after {
+    content: '';
+    position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
+    width: 80px; height: 80px; opacity: .1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+  }
   .greeting-banner h2 { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; }
   .greeting-banner p { font-size: 15px; color: rgba(255,255,255,.7); }
   .streak-badge {
@@ -310,7 +319,7 @@
   .prayer-pill .pill-time { font-size: 11px; color: var(--text-muted); }
   .prayer-pill.done .pill-name,
   .prayer-pill.done .pill-time { color: rgba(255,255,255,.9); }
-  .prayer-pill.done .pill-icon { filter: brightness(10); }
+  .prayer-pill.done .pill-icon { color: #fff; }
 
   .qa-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
   .qa-card { padding: 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; }
@@ -320,9 +329,9 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0;
   }
-  .qa-icon-green { background: rgba(27,77,62,.1); }
-  .qa-icon-gold  { background: rgba(201,168,76,.15); }
-  .qa-icon-blue  { background: rgba(59,130,246,.1); }
+  .qa-icon-green { background: rgba(27,77,62,.1); color: var(--green); }
+  .qa-icon-gold  { background: rgba(201,168,76,.15); color: var(--gold); }
+  .qa-icon-blue  { background: rgba(59,130,246,.1); color: #3B82F6; }
   .qa-card-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
   .qa-card-sub   { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
 
@@ -414,7 +423,7 @@
 
   .chat-main { display: flex; flex-direction: column; background: var(--bg); }
   .chat-header { padding: 16px 24px; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
-  .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; }
   .chat-header-name { font-size: 15px; font-weight: 700; color: var(--text-primary); }
   .chat-header-status { font-size: 12px; color: var(--text-muted); }
   .chat-messages { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; min-height: 0; height: 650px; }
@@ -426,7 +435,10 @@
   .msg-group.user .msg-bubble { background: var(--green); color: #fff; border-top-right-radius: 4px; }
   .msg-time { font-size: 11px; color: var(--text-muted); padding: 0 4px; }
   .msg-sources { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
-  .source-chip { background: rgba(27,77,62,.08); color: var(--green); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+  .source-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; }
+  .source-chip.chip-kb     { background: rgba(27,77,62,.08); color: var(--green); }
+  .source-chip.chip-lookup { background: rgba(201,168,76,.15); color: #92400E; }
+  .source-chip.chip-web    { background: #F3F4F6; color: #374151; }
   .typing-indicator { display: flex; align-items: center; gap: 6px; padding: 14px 16px; background: #fff; border: 1px solid var(--border); border-radius: 16px; border-top-left-radius: 4px; width: fit-content; }
   .typing-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: blink 1.2s infinite; }
   .typing-dot:nth-child(2) { animation-delay: .2s; }
@@ -445,7 +457,7 @@
   .chat-send-btn {
     width: 52px; height: 52px; border-radius: 50%;
     background: var(--green); border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff;
   }
   .chat-suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
   .chat-suggestion { padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border); background: #fff; font-size: 13px; color: var(--text-primary); cursor: pointer; }
@@ -480,8 +492,26 @@
   .dua-card-meta { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
   .dua-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 22px; color: var(--green); text-align: right; line-height: 1.8; direction: rtl; }
   .dua-transliteration { font-size: 14px; color: var(--text-muted); font-style: italic; }
-  .dua-translation { font-size: 14px; color: var(--text-primary); line-height: 1.7; padding-top: 8px; border-top: 1px solid var(--border); }
+  .dua-translation { font-size: 18px; color: var(--text-primary); line-height: 1.7; padding-top: 8px; border-top: 1px solid var(--border); }
   .dua-card-footer { display: flex; gap: 8px; }
+  .finder-tabs { display: flex; gap: 4px; background: var(--bg); border-radius: var(--radius-md); padding: 4px; width: fit-content; margin: 0 auto 32px; }
+  .finder-tab { padding: 10px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+  .finder-tab.active { background: #fff; color: var(--green); box-shadow: var(--shadow); }
+  .surah-search-box { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 4px; display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .surah-search-box svg { margin-left: 14px; color: var(--text-light); flex-shrink: 0; }
+  .surah-search-box input { border: none; outline: none; height: 48px; font-family: 'Noto Sans', sans-serif; font-size: 15px; flex: 1; }
+  .surah-card { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+  .surah-card-header { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .surah-card-title-ar { font-family: 'Noto Sans Arabic', sans-serif; font-size: 28px; color: var(--green); }
+  .surah-card-title-en { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-top: 2px; }
+  .surah-card-meta { font-size: 13px; color: var(--text-muted); text-align: right; }
+  .ayah-row { display: flex; gap: 16px; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .ayah-row:last-child { border-bottom: none; }
+  .ayah-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(27,77,62,.08); color: var(--green); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 4px; }
+  .ayah-play-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .ayah-text { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .ayah-arabic { font-family: 'Noto Sans Arabic', sans-serif; font-size: 22px; color: var(--text-primary); text-align: right; direction: rtl; line-height: 1.8; }
+  .ayah-translation { font-size: 18px; color: var(--text-muted); line-height: 1.6; }
 
   /* ══════════════════════════════════════════
      SCREEN 7 — PRAYER TIMES
@@ -489,7 +519,7 @@
   .times-body { display: grid; grid-template-columns: 260px 1fr; min-height: calc(900px - 64px); }
   .times-main { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
   .location-bar { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 18px; }
-  .location-bar .loc-icon { font-size: 20px; }
+  .location-bar .loc-icon { font-size: 20px; color: var(--text-muted); }
   .location-bar .loc-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
   .location-bar .loc-method { font-size: 12px; color: var(--text-muted); margin-left: auto; }
   .times-hero-card { background: var(--green); border-radius: var(--radius-lg); padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -541,6 +571,7 @@
   .breakdown-row { display: flex; justify-content: space-between; font-size: 14px; }
   .breakdown-row .br-label { color: var(--text-muted); }
   .breakdown-row .br-val { font-weight: 600; color: var(--text-primary); }
+  .attribution-text { font-size: 11px; color: var(--text-light); line-height: 1.5; padding-top: 4px; }
 
   /* ══════════════════════════════════════════
      SCREEN 9 — PROFILE & SETTINGS
@@ -568,9 +599,83 @@
   .toggle.off { background: var(--border); }
   .toggle.off::after { right: auto; left: 3px; }
   .select-field { height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; color: var(--text-primary); background: #fff; }
+
+  /* ══════════════════════════════════════════
+     SCREEN 10 — SURAH BROWSER
+  ══════════════════════════════════════════ */
+  .browser-body { padding: 32px 60px; display: flex; flex-direction: column; gap: 24px; max-width: 900px; margin: 0 auto; width: 100%; overflow-y: auto; max-height: calc(900px - 64px); }
+  .finder-page-body { display: grid; grid-template-columns: 260px 1fr; min-height: calc(900px - 64px); }
+  .browser-header h2 { font-size: 28px; font-weight: 700; color: var(--green); }
+  .browser-header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+  .browser-list { display: flex; flex-direction: column; }
+  .browser-row { display: flex; align-items: center; gap: 16px; padding: 18px 8px; border-bottom: 1px solid var(--border); cursor: pointer; }
+  .browser-row:hover { background: var(--bg); }
+  .browser-row:last-child { border-bottom: none; }
+  .browser-num { width: 30px; font-size: 13px; color: var(--text-light); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .browser-names { flex: 1; }
+  .browser-name-ar { font-family: 'Noto Sans Arabic', sans-serif; font-size: 19px; color: var(--text-primary); }
+  .browser-name-en { font-size: 16px; color: var(--text-muted); margin-top: 2px; }
+  .browser-ayahs { font-size: 12px; color: var(--text-muted); width: 70px; flex-shrink: 0; }
+  .revelation-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; width: 76px; text-align: center; flex-shrink: 0; }
+  .revelation-badge.meccan { background: rgba(201,168,76,.15); color: #92400E; }
+  .revelation-badge.medinan { background: rgba(27,77,62,.08); color: var(--green); }
+  .browser-chevron { color: var(--text-light); flex-shrink: 0; }
 </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════
+     COMPONENT LIBRARY — new reusable pieces added in Chat 7a
+     (reference only — not a numbered screen)
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">Component Library — new in Chat 7a</div>
+  <div class="screen" style="min-height:auto; padding:40px; display:flex; flex-direction:column; gap:32px;">
+
+    <div>
+      <div class="zakat-section-title" style="border:none;padding-bottom:8px">Citation chips (Screen 05)</div>
+      <div class="msg-sources">
+        <span class="source-chip chip-kb"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Quran 94:1-8</span>
+        <span class="source-chip chip-lookup"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Surah Ash-Sharh — direct lookup</span>
+        <span class="source-chip chip-web"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> islamqa.info — live web source</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px">Classes: <code>.source-chip.chip-kb</code> (green — knowledge base), <code>.source-chip.chip-lookup</code> (gold — direct lookup), <code>.source-chip.chip-web</code> (grey — web source)</p>
+    </div>
+
+    <div>
+      <div class="zakat-section-title" style="border:none;padding-bottom:8px">Ayah audio button (Screen 06b)</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="ayah-play-btn" aria-label="Play"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button>
+        <span style="font-size:13px;color:var(--text-muted)">Class: <code>.ayah-play-btn</code> — triggers playback via alquran.cloud audio URL, not a native &lt;audio&gt; element</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="zakat-section-title" style="border:none;padding-bottom:8px">Madhab / country / currency selectors (Screens 02, 08, 09)</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;max-width:700px">
+        <div class="field" style="width:200px"><label>School of Thought (Madhab)</label><select><option>Hanafi</option><option selected>Shafi'i</option><option>Maliki</option><option>Hanbali</option><option>Ja'fari</option></select><div class="field-helper">Affects your Asr prayer time calculation</div></div>
+        <div class="field" style="width:200px"><label>Currency</label><select><option>USD ($)</option><option selected>SGD (S$)</option></select><div class="field-helper">Enter all values in this currency</div></div>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px">All three selectors reuse the base <code>.field select</code> style — no new input styling, just new option sets. <code>.field-helper</code> is the shared 12px muted helper-text style beneath any field.</p>
+    </div>
+
+    <div>
+      <div class="zakat-section-title" style="border:none;padding-bottom:8px">Attribution text (Screen 08 and any pricing surface)</div>
+      <div class="attribution-text">Gold &amp; silver prices by gold-api.com · Exchange rates by ExchangeRate-API</div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px">Class: <code>.attribution-text</code> — 11px, <code>var(--text-light)</code></p>
+    </div>
+
+    <div>
+      <div class="zakat-section-title" style="border:none;padding-bottom:8px">Revelation type badges (Screen 10)</div>
+      <div style="display:flex;gap:10px">
+        <span class="revelation-badge meccan">Meccan</span>
+        <span class="revelation-badge medinan">Medinan</span>
+      </div>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:8px">Classes: <code>.revelation-badge.meccan</code> (gold tint), <code>.revelation-badge.medinan</code> (green tint)</p>
+    </div>
+
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════
      SCREEN 1 — LOGIN
@@ -581,7 +686,7 @@
     <div class="login-layout">
       <div class="login-left">
         <div class="login-brand">
-          <div class="login-brand-icon">☽</div>
+          <div class="login-brand-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
           <div>
             <div class="login-brand-name">NoorAI</div>
             <div class="login-brand-ar">نور الذكاء الاصطناعي</div>
@@ -632,7 +737,7 @@
     <div class="login-layout">
       <div class="login-left">
         <div class="login-brand">
-          <div class="login-brand-icon">☽</div>
+          <div class="login-brand-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
           <div>
             <div class="login-brand-name">NoorAI</div>
             <div class="login-brand-ar">نور الذكاء الاصطناعي</div>
@@ -660,6 +765,44 @@
             <div class="field"><label>Email address</label><input type="email" placeholder="you@example.com" /></div>
             <div class="field"><label>Password</label><input type="password" placeholder="At least 8 characters" /></div>
             <div class="field"><label>Confirm password</label><input type="password" placeholder="Repeat your password" /></div>
+            <div class="field">
+              <label>School of Thought (Madhab)</label>
+              <select>
+                <option>Hanafi</option>
+                <option selected>Shafi'i</option>
+                <option>Maliki</option>
+                <option>Hanbali</option>
+                <option>Ja'fari</option>
+              </select>
+              <div class="field-helper">This affects your Asr prayer time calculation</div>
+            </div>
+            <div class="field">
+              <label>Country</label>
+              <select>
+                <optgroup label="Common">
+                  <option>Indonesia</option>
+                  <option>Pakistan</option>
+                  <option>Bangladesh</option>
+                  <option>Egypt</option>
+                  <option>Turkey</option>
+                  <option>Saudi Arabia</option>
+                  <option>Malaysia</option>
+                  <option selected>Singapore</option>
+                  <option>United Arab Emirates</option>
+                  <option>United Kingdom</option>
+                  <option>United States</option>
+                </optgroup>
+                <optgroup label="All countries">
+                  <option>Afghanistan</option>
+                  <option>Australia</option>
+                  <option>Canada</option>
+                  <option>Germany</option>
+                  <option>India</option>
+                  <option>&hellip;</option>
+                </optgroup>
+              </select>
+              <div class="field-helper">Used to set your local prayer calculation method</div>
+            </div>
             <button class="btn btn-primary btn-lg btn-full">Create Account</button>
             <p class="login-signup">Already have an account? <a href="#">Sign in</a></p>
           </div>
@@ -676,64 +819,67 @@
   <div class="screen-label">03 — Dashboard</div>
   <div class="screen">
     <div class="topnav">
-      <div class="topnav-logo">☽</div>
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
       <span class="topnav-name">NoorAI</span>
       <span class="topnav-arabic">نور</span>
       <div class="topnav-links">
         <div class="topnav-link active">Dashboard</div>
         <div class="topnav-link">Prayers</div>
         <div class="topnav-link">AI Chat</div>
-        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
         <div class="topnav-link">Zakat</div>
       </div>
       <div class="topnav-right">
-        <div class="topnav-icon">🔔</div>
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
         <div class="topnav-avatar">AH</div>
       </div>
     </div>
     <div class="dash-body">
       <div class="dash-sidebar">
         <div class="sidebar-section">Main</div>
-        <div class="sidebar-item active"><span class="sidebar-icon">🏠</span>Dashboard</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
-        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
         <div class="sidebar-section">Tools</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🕐</span>Prayer Times</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>Zakat Calculator</div>
         <div class="sidebar-section">Account</div>
-        <div class="sidebar-item"><span class="sidebar-icon">👤</span>Profile</div>
-        <div class="sidebar-item"><span class="sidebar-icon">⚙️</span>Settings</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profile</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>Settings</div>
       </div>
       <div class="dash-main">
         <div class="greeting-banner">
           <div>
-            <h2>Assalamu Alaikum, Ahmad 👋</h2>
+            <h2>Assalamu Alaikum, Ahmad </h2>
             <p>Thursday, 11 June 2026 · Singapore</p>
           </div>
-          <div class="streak-badge">🔥 14-day streak</div>
+          <div class="streak-badge"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg> 14-day streak</div>
         </div>
         <div class="stats-row">
           <div class="card stat-card"><div class="stat-label">Prayers today</div><div class="stat-value">3/5</div><div class="stat-sub">Asr, Maghrib, Isha remaining</div></div>
-          <div class="card stat-card"><div class="stat-label">Current streak</div><div class="stat-value">14 🔥</div><div class="stat-sub">Personal best: 21 days</div></div>
+          <div class="card stat-card"><div class="stat-label">Current streak</div><div class="stat-value">14 <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg></div><div class="stat-sub">Personal best: 21 days</div></div>
           <div class="card stat-card"><div class="stat-label">This week</div><div class="stat-value">29/35</div><div class="stat-sub">83% completion rate</div></div>
           <div class="card stat-card"><div class="stat-label">Duas saved</div><div class="stat-value">7</div><div class="stat-sub">From your history</div></div>
         </div>
         <div class="card prayer-track-card">
           <div class="section-head"><h3>Today's Prayers</h3><a href="#">View history →</a></div>
           <div class="prayer-pills">
-            <div class="prayer-pill done"><div class="pill-icon">✓</div><div class="pill-name">Fajr</div><div class="pill-time">5:47 AM</div></div>
-            <div class="prayer-pill done"><div class="pill-icon">✓</div><div class="pill-name">Dhuhr</div><div class="pill-time">1:05 PM</div></div>
-            <div class="prayer-pill done"><div class="pill-icon">✓</div><div class="pill-name">Zuhr</div><div class="pill-time">1:05 PM</div></div>
-            <div class="prayer-pill upcoming"><div class="pill-icon">🕐</div><div class="pill-name">Asr</div><div class="pill-time">3:47 PM</div></div>
-            <div class="prayer-pill"><div class="pill-icon">🌙</div><div class="pill-name">Isha</div><div class="pill-time">8:28 PM</div></div>
+            <div class="prayer-pill done"><div class="pill-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></div><div class="pill-name">Fajr</div><div class="pill-time">5:47 AM</div></div>
+            <div class="prayer-pill done"><div class="pill-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></div><div class="pill-name">Dhuhr</div><div class="pill-time">1:05 PM</div></div>
+            <div class="prayer-pill upcoming"><div class="pill-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="pill-name">Asr</div><div class="pill-time">3:47 PM</div></div>
+            <div class="prayer-pill"><div class="pill-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div><div class="pill-name">Isha</div><div class="pill-time">8:28 PM</div></div>
           </div>
         </div>
         <div class="section-head"><h3>Quick Actions</h3></div>
         <div class="qa-grid">
-          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-green">🤖</div><div><div class="qa-card-title">Ask NoorAI</div><div class="qa-card-sub">Get answers about Islam</div></div></div>
-          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-gold">📖</div><div><div class="qa-card-title">Find a Dua</div><div class="qa-card-sub">Describe your situation</div></div></div>
-          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-blue">🧮</div><div><div class="qa-card-title">Zakat Calculator</div><div class="qa-card-sub">Calculate what you owe</div></div></div>
+          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-green"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div><div><div class="qa-card-title">Ask NoorAI</div><div class="qa-card-sub">Get answers about Islam</div></div></div>
+          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-gold"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div><div><div class="qa-card-title">Find a Dua</div><div class="qa-card-sub">Describe your situation</div></div></div>
+          <div class="card qa-card"><div class="qa-icon-wrap qa-icon-blue"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></div><div><div class="qa-card-title">Zakat Calculator</div><div class="qa-card-sub">Calculate what you owe</div></div></div>
         </div>
       </div>
       <div class="dash-right">
@@ -765,31 +911,35 @@
   <div class="screen-label">04 — Prayer Tracker</div>
   <div class="screen">
     <div class="topnav">
-      <div class="topnav-logo">☽</div>
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
       <span class="topnav-name">NoorAI</span>
       <span class="topnav-arabic">نور</span>
       <div class="topnav-links">
         <div class="topnav-link">Dashboard</div>
         <div class="topnav-link active">Prayers</div>
         <div class="topnav-link">AI Chat</div>
-        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
         <div class="topnav-link">Zakat</div>
       </div>
       <div class="topnav-right">
-        <div class="topnav-icon">🔔</div>
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
         <div class="topnav-avatar">AH</div>
       </div>
     </div>
     <div class="tracker-body">
       <div class="dash-sidebar">
         <div class="sidebar-section">Main</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
-        <div class="sidebar-item active"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
-        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
         <div class="sidebar-section">Tools</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🕐</span>Prayer Times</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>Zakat Calculator</div>
       </div>
       <div class="tracker-main">
         <div class="tracker-hero">
@@ -799,7 +949,7 @@
           </div>
           <div class="tracker-hero-right">
             <div class="big">14</div>
-            <div class="small">Day streak 🔥</div>
+            <div class="small">Day streak <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg></div>
           </div>
         </div>
         <div class="card" style="padding:24px">
@@ -817,9 +967,8 @@
         <div class="card">
           <div style="padding:20px 24px"><div class="section-head"><h3>Today's Prayers</h3></div></div>
           <div class="prayers-table">
-            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Fajr</div><div class="pr-arabic">الفجر</div></div><div class="pr-time">5:47 AM</div><div class="pr-action done">✓</div></div>
-            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Dhuhr</div><div class="pr-arabic">الظهر</div></div><div class="pr-time">1:05 PM</div><div class="pr-action done">✓</div></div>
-            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Zuhr</div><div class="pr-arabic">الظهر</div></div><div class="pr-time">1:05 PM</div><div class="pr-action done">✓</div></div>
+            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Fajr</div><div class="pr-arabic">الفجر</div></div><div class="pr-time">5:47 AM</div><div class="pr-action done"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></div></div>
+            <div class="prayer-row-item"><div class="pr-indicator done"></div><div><div class="pr-name">Dhuhr</div><div class="pr-arabic">الظهر</div></div><div class="pr-time">1:05 PM</div><div class="pr-action done"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></div></div>
             <div class="prayer-row-item current-row"><div class="pr-indicator upcoming"></div><div><div class="pr-name" style="color:var(--green)">Asr</div><div class="pr-arabic">العصر</div></div><div class="pr-time" style="color:var(--green);font-weight:700">3:47 PM</div><div class="pr-action todo">○</div></div>
             <div class="prayer-row-item"><div class="pr-indicator"></div><div><div class="pr-name">Maghrib</div><div class="pr-arabic">المغرب</div></div><div class="pr-time">7:15 PM</div><div class="pr-action todo">○</div></div>
             <div class="prayer-row-item"><div class="pr-indicator"></div><div><div class="pr-name">Isha</div><div class="pr-arabic">العشاء</div></div><div class="pr-time">8:28 PM</div><div class="pr-action todo">○</div></div>
@@ -837,18 +986,20 @@
   <div class="screen-label">05 — AI Chatbot</div>
   <div class="screen">
     <div class="topnav">
-      <div class="topnav-logo">☽</div>
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
       <span class="topnav-name">NoorAI</span>
       <span class="topnav-arabic">نور</span>
       <div class="topnav-links">
         <div class="topnav-link">Dashboard</div>
         <div class="topnav-link">Prayers</div>
         <div class="topnav-link active">AI Chat</div>
-        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
         <div class="topnav-link">Zakat</div>
       </div>
       <div class="topnav-right">
-        <div class="topnav-icon">🔔</div>
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
         <div class="topnav-avatar">AH</div>
       </div>
     </div>
@@ -863,12 +1014,12 @@
       </div>
       <div class="chat-main">
         <div class="chat-header">
-          <div class="chat-avatar">🤖</div>
+          <div class="chat-avatar"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></div>
           <div><div class="chat-header-name">NoorAI Assistant</div><div class="chat-header-status">Powered by Islamic knowledge base + web search</div></div>
         </div>
         <div class="chat-messages">
           <div class="msg-group bot">
-            <div class="msg-bubble">Assalamu Alaikum! 🌙 I'm NoorAI. I can answer questions about Islam, find duas for you, explain Quranic verses, or help with fiqh questions. How can I help you today?</div>
+            <div class="msg-bubble">Assalamu Alaikum! <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg> I'm NoorAI. I can answer questions about Islam, find duas for you, explain Quranic verses, or help with fiqh questions. How can I help you today?</div>
             <div class="msg-time">10:30 AM</div>
           </div>
           <div class="msg-group user">
@@ -878,9 +1029,9 @@
           <div class="msg-group bot">
             <div class="msg-bubble">Surah Al-Fatiha, "The Opening," is the first chapter of the Quran and one of the most profound. It is called Umm al-Quran (Mother of the Quran) and is recited in every unit of prayer — making it the most repeated supplication in Islam.<br><br>It covers three core themes: praise and gratitude to Allah, acknowledgment of His sovereignty on the Day of Judgment, and a heartfelt supplication for guidance on the straight path.</div>
             <div class="msg-sources">
-              <span class="source-chip">📖 Quran 1:1–7</span>
-              <span class="source-chip">🗄 Knowledge base</span>
-              <span class="source-chip">🌐 Web search</span>
+              <span class="source-chip chip-kb"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Quran 94:1-8</span>
+              <span class="source-chip chip-lookup"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Surah Ash-Sharh — direct lookup</span>
+              <span class="source-chip chip-web"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> islamqa.info — live web source</span>
             </div>
             <div class="msg-time">10:31 AM</div>
           </div>
@@ -905,16 +1056,16 @@
           </div>
           <div class="chat-input-row">
             <textarea class="chat-input-box" placeholder="Ask about Islam, duas, Quran, or fiqh…"></textarea>
-            <button class="chat-send-btn">➤</button>
+            <button class="chat-send-btn"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg></button>
           </div>
         </div>
       </div>
       <div class="chat-right">
         <h4>Suggested topics</h4>
-        <div class="topic-card"><div class="topic-card-title">🕌 Five Pillars of Islam</div><div class="topic-card-sub">Learn about Shahada, Salah, Zakat, Sawm, Hajj</div></div>
-        <div class="topic-card"><div class="topic-card-title">📿 99 Names of Allah</div><div class="topic-card-sub">Explore Al-Asma ul-Husna</div></div>
-        <div class="topic-card"><div class="topic-card-title">🤲 Daily Duas</div><div class="topic-card-sub">Morning, evening, and situational duas</div></div>
-        <div class="topic-card"><div class="topic-card-title">📖 Quran Tafsir</div><div class="topic-card-sub">Explore meanings and commentary</div></div>
+        <div class="topic-card"><div class="topic-card-title"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg> Five Pillars of Islam</div><div class="topic-card-sub">Learn about Shahada, Salah, Zakat, Sawm, Hajj</div></div>
+        <div class="topic-card"><div class="topic-card-title"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="1"/></svg> 99 Names of Allah</div><div class="topic-card-sub">Explore Al-Asma ul-Husna</div></div>
+        <div class="topic-card"><div class="topic-card-title"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95"/><path d="m2 15 6 6"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91"/></svg> Daily Duas</div><div class="topic-card-sub">Morning, evening, and situational duas</div></div>
+        <div class="topic-card"><div class="topic-card-title"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Quran Tafsir</div><div class="topic-card-sub">Explore meanings and commentary</div></div>
         <div style="border-top:1px solid var(--border);padding-top:16px">
           <h4>Sources used</h4>
           <p style="font-size:13px;color:var(--text-muted);margin-top:8px;line-height:1.6">NoorAI searches a curated Islamic knowledge base, verified hadith collections, and trusted web sources to answer your questions.</p>
@@ -928,28 +1079,47 @@
      SCREEN 6 — DUA FINDER
 ══════════════════════════════════════ -->
 <div>
-  <div class="screen-label">06 — Dua &amp; Surah Finder</div>
+  <div class="screen-label">06a — Dua &amp; Surah Finder (Dua Finder tab)</div>
   <div class="screen">
     <div class="topnav">
-      <div class="topnav-logo">☽</div>
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
       <span class="topnav-name">NoorAI</span>
       <span class="topnav-arabic">نور</span>
       <div class="topnav-links">
         <div class="topnav-link">Dashboard</div>
         <div class="topnav-link">Prayers</div>
         <div class="topnav-link">AI Chat</div>
-        <div class="topnav-link active">Duas</div>
+        <div class="topnav-link active">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
         <div class="topnav-link">Zakat</div>
       </div>
       <div class="topnav-right">
-        <div class="topnav-icon">🔔</div>
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
         <div class="topnav-avatar">AH</div>
       </div>
     </div>
-    <div style="padding:40px 80px;overflow-y:auto;max-height:836px">
-      <div class="dua-hero" style="margin-bottom:32px">
+    <div class="finder-page-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
+        <div class="sidebar-section">Tools</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>Zakat Calculator</div>
+      </div>
+      <div style="padding:32px 60px;overflow-y:auto">
+      <div class="dua-hero" style="margin-bottom:24px">
         <h1>Find the right Dua</h1>
         <p>Describe what you are going through and NoorAI will find the most relevant duas and Surahs for your situation.</p>
+      </div>
+      <div class="finder-tabs">
+        <div class="finder-tab active"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95"/><path d="m2 15 6 6"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91"/></svg>Dua Finder</div>
+        <div class="finder-tab"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Surah Finder</div>
       </div>
       <div class="dua-search-box" style="margin-bottom:32px">
         <textarea placeholder="e.g. I am feeling anxious about an exam tomorrow and need strength and guidance…"></textarea>
@@ -979,7 +1149,7 @@
         </div>
         <div class="card dua-card">
           <div class="dua-card-header">
-            <div><div class="dua-card-title">Surah Al-Inshirah (94)</div><div class="dua-card-meta">Quran · Chapter 94, 8 verses</div></div>
+            <div><div class="dua-card-title">Surah Ash-Sharh (94)</div><div class="dua-card-meta">Quran · Chapter 94, 8 verses</div></div>
             <div style="display:flex;gap:8px"><span class="badge badge-green">Recommended</span><button class="btn btn-ghost btn-sm">Save</button></div>
           </div>
           <div class="dua-arabic">أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ</div>
@@ -987,6 +1157,95 @@
           <div class="dua-translation">"Did We not expand for you your breast? And We removed from you your burden which had weighed upon your back. And raised high for you your repute. For indeed, with hardship will be ease…"</div>
           <div class="dua-card-footer"><button class="btn btn-outline btn-sm">Play audio</button><button class="btn btn-ghost btn-sm">Share</button></div>
         </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6b — SURAH FINDER (Tab B of Screen 06)
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">06b — Dua &amp; Surah Finder (Surah Finder tab)</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link active">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
+        <div class="topnav-link">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div class="finder-page-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
+        <div class="sidebar-section">Tools</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>Zakat Calculator</div>
+      </div>
+      <div style="padding:32px 60px;overflow-y:auto">
+      <div class="dua-hero" style="margin-bottom:24px">
+        <h1>Find a Surah</h1>
+        <p>Search by name or number, read the Arabic and translation, and listen to each ayah.</p>
+      </div>
+      <div class="finder-tabs">
+        <div class="finder-tab"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95"/><path d="m2 15 6 6"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91"/></svg>Dua Finder</div>
+        <div class="finder-tab active"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>Surah Finder</div>
+      </div>
+      <div class="surah-search-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <input type="text" placeholder="Search by Surah name or number…" value="Ash-Sharh" />
+      </div>
+      <div class="card surah-card">
+        <div class="surah-card-header">
+          <div>
+            <div class="surah-card-title-ar">الشرح</div>
+            <div class="surah-card-title-en">Ash-Sharh — The Relief</div>
+          </div>
+          <div class="surah-card-meta">Chapter 94 · 8 verses · Meccan</div>
+        </div>
+        <div class="ayah-row">
+          <div class="ayah-num">1</div>
+          <button class="ayah-play-btn" aria-label="Play ayah 1"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button>
+          <div class="ayah-text">
+            <div class="ayah-arabic">أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ</div>
+            <div class="ayah-translation">Did We not expand for you your breast?</div>
+          </div>
+        </div>
+        <div class="ayah-row">
+          <div class="ayah-num">2</div>
+          <button class="ayah-play-btn" aria-label="Play ayah 2"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button>
+          <div class="ayah-text">
+            <div class="ayah-arabic">وَوَضَعْنَا عَنكَ وِزْرَكَ</div>
+            <div class="ayah-translation">And We removed from you your burden.</div>
+          </div>
+        </div>
+        <div class="ayah-row">
+          <div class="ayah-num">3</div>
+          <button class="ayah-play-btn" aria-label="Play ayah 3"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></button>
+          <div class="ayah-text">
+            <div class="ayah-arabic">الَّذِي أَنقَضَ ظَهْرَكَ</div>
+            <div class="ayah-translation">Which had weighed upon your back.</div>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
   </div>
@@ -999,37 +1258,41 @@
   <div class="screen-label">07 — Prayer Times</div>
   <div class="screen">
     <div class="topnav">
-      <div class="topnav-logo">☽</div>
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
       <span class="topnav-name">NoorAI</span>
       <span class="topnav-arabic">نور</span>
       <div class="topnav-links">
         <div class="topnav-link">Dashboard</div>
         <div class="topnav-link">Prayers</div>
         <div class="topnav-link">AI Chat</div>
-        <div class="topnav-link">Duas</div>
-        <div class="topnav-link active">Times</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
+        <div class="topnav-link">Zakat</div>
       </div>
       <div class="topnav-right">
-        <div class="topnav-icon">🔔</div>
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
         <div class="topnav-avatar">AH</div>
       </div>
     </div>
     <div class="times-body">
       <div class="dash-sidebar">
         <div class="sidebar-section">Main</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
-        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
         <div class="sidebar-section">Tools</div>
-        <div class="sidebar-item active"><span class="sidebar-icon">🕐</span>Prayer Times</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>Zakat Calculator</div>
       </div>
       <div class="times-main">
         <div class="location-bar">
-          <div class="loc-icon">📍</div>
+          <div class="loc-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></div>
           <div class="loc-name">Singapore, SG</div>
-          <div class="loc-method">Calculation: MUIS method · Shafi'i</div>
+          <div class="loc-method">Madhab: Shafi'i</div>
           <button class="btn btn-ghost btn-sm" style="margin-left:16px">Change location</button>
         </div>
         <div class="times-hero-card">
@@ -1049,9 +1312,9 @@
           </div>
         </div>
         <div class="times-list">
-          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Fajr</div><div class="ti-arabic">الفجر</div></div><div class="ti-time">5:47 AM</div><div class="ti-prayed"><span class="badge badge-green">Prayed ✓</span></div></div>
+          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Fajr</div><div class="ti-arabic">الفجر</div></div><div class="ti-time">5:47 AM</div><div class="ti-prayed"><span class="badge badge-green">Prayed <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></div></div>
           <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Sunrise</div><div class="ti-arabic">الشروق</div></div><div class="ti-time">7:04 AM</div><div class="ti-prayed"></div></div>
-          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Dhuhr</div><div class="ti-arabic">الظهر</div></div><div class="ti-time">1:05 PM</div><div class="ti-prayed"><span class="badge badge-green">Prayed ✓</span></div></div>
+          <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Dhuhr</div><div class="ti-arabic">الظهر</div></div><div class="ti-time">1:05 PM</div><div class="ti-prayed"><span class="badge badge-green">Prayed <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg></span></div></div>
           <div class="times-item current"><div class="ti-dot active"></div><div style="flex:1"><div class="ti-name" style="color:var(--green)">Asr</div><div class="ti-arabic">العصر</div></div><div class="ti-time" style="color:var(--green);font-weight:700">3:47 PM</div><div class="ti-prayed"><span class="badge badge-gold">Upcoming</span></div></div>
           <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Maghrib</div><div class="ti-arabic">المغرب</div></div><div class="ti-time">7:15 PM</div><div class="ti-prayed"></div></div>
           <div class="times-item"><div class="ti-dot"></div><div style="flex:1"><div class="ti-name">Isha</div><div class="ti-arabic">العشاء</div></div><div class="ti-time">8:28 PM</div><div class="ti-prayed"></div></div>
@@ -1068,31 +1331,35 @@
   <div class="screen-label">08 — Zakat Calculator</div>
   <div class="screen">
     <div class="topnav">
-      <div class="topnav-logo">☽</div>
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
       <span class="topnav-name">NoorAI</span>
       <span class="topnav-arabic">نور</span>
       <div class="topnav-links">
         <div class="topnav-link">Dashboard</div>
         <div class="topnav-link">Prayers</div>
         <div class="topnav-link">AI Chat</div>
-        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
         <div class="topnav-link active">Zakat</div>
       </div>
       <div class="topnav-right">
-        <div class="topnav-icon">🔔</div>
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
         <div class="topnav-avatar">AH</div>
       </div>
     </div>
     <div class="zakat-body">
       <div class="dash-sidebar">
         <div class="sidebar-section">Main</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
-        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
         <div class="sidebar-section">Tools</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🕐</span>Prayer Times</div>
-        <div class="sidebar-item active"><span class="sidebar-icon">🧮</span>Zakat Calculator</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>Prayer Times</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>Zakat Calculator</div>
       </div>
       <div class="zakat-main">
         <div class="zakat-intro">
@@ -1100,10 +1367,25 @@
           <p>Enter your assets below to calculate how much Zakat you owe this year. Zakat is 2.5% of your total eligible wealth above the Nisab threshold.</p>
         </div>
         <div class="card zakat-form-card">
+          <div class="field" style="max-width:220px">
+            <label>Currency</label>
+            <select>
+              <option>USD ($)</option>
+              <option selected>SGD (S$)</option>
+              <option>GBP (&pound;)</option>
+              <option>EUR (&euro;)</option>
+              <option>PKR (&#8360;)</option>
+              <option>MYR (RM)</option>
+              <option>INR (&#8377;)</option>
+              <option>AED (&#1583;.&#1573;)</option>
+              <option>SAR (&#65020;)</option>
+            </select>
+            <div class="field-helper">Enter all values in this currency</div>
+          </div>
           <div class="zakat-section-title">Cash &amp; Savings</div>
           <div class="zakat-fields">
-            <div class="field"><label>Cash in hand</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
-            <div class="field"><label>Bank savings</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
+            <div class="field"><label>Cash in hand</label><div class="input-prefix"><span class="input-prefix-label">S$</span><input type="number" placeholder="0.00" style="padding-left:40px" /></div></div>
+            <div class="field"><label>Bank savings</label><div class="input-prefix"><span class="input-prefix-label">S$</span><input type="number" placeholder="0.00" style="padding-left:40px" /></div></div>
           </div>
           <div class="zakat-section-title" style="margin-top:8px">Gold &amp; Silver</div>
           <div class="zakat-fields">
@@ -1112,8 +1394,8 @@
           </div>
           <div class="zakat-section-title" style="margin-top:8px">Investments &amp; Business</div>
           <div class="zakat-fields">
-            <div class="field"><label>Stocks &amp; investments</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
-            <div class="field"><label>Business assets</label><div class="input-prefix"><span class="input-prefix-label">$</span><input type="number" placeholder="0.00" style="padding-left:32px" /></div></div>
+            <div class="field"><label>Stocks &amp; investments</label><div class="input-prefix"><span class="input-prefix-label">S$</span><input type="number" placeholder="0.00" style="padding-left:40px" /></div></div>
+            <div class="field"><label>Business assets</label><div class="input-prefix"><span class="input-prefix-label">S$</span><input type="number" placeholder="0.00" style="padding-left:40px" /></div></div>
           </div>
           <div style="display:flex;gap:12px;margin-top:8px">
             <button class="btn btn-primary btn-lg" style="flex:1">Calculate Zakat</button>
@@ -1125,28 +1407,29 @@
         <h3>Nisab Threshold</h3>
         <div class="nisab-card">
           <div class="nisab-label">Gold nisab (85g)</div>
-          <div class="nisab-value">$7,234.50</div>
+          <div class="nisab-value">S$7,234.50</div>
           <div class="nisab-sub">Updated today · SGD</div>
         </div>
         <div class="nisab-card" style="margin-top:12px">
           <div class="nisab-label">Silver nisab (595g)</div>
-          <div class="nisab-value">$682.30</div>
+          <div class="nisab-value">S$682.30</div>
           <div class="nisab-sub">Updated today · SGD</div>
         </div>
         <div class="result-card">
           <div class="result-label">Your Zakat due</div>
-          <div class="result-amount">$1,250</div>
+          <div class="result-amount">S$1,250</div>
           <div class="result-currency">Singapore Dollar (SGD)</div>
           <div class="result-note">Based on 2.5% of total eligible assets above the Nisab threshold</div>
         </div>
         <div class="breakdown">
           <div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Breakdown</div>
-          <div class="breakdown-row"><span class="br-label">Total assets</span><span class="br-val">$50,000</span></div>
-          <div class="breakdown-row"><span class="br-label">Deductions</span><span class="br-val">— $0</span></div>
-          <div class="breakdown-row"><span class="br-label">Zakatable wealth</span><span class="br-val">$50,000</span></div>
+          <div class="breakdown-row"><span class="br-label">Total assets</span><span class="br-val">S$50,000</span></div>
+          <div class="breakdown-row"><span class="br-label">Deductions</span><span class="br-val">— S$0</span></div>
+          <div class="breakdown-row"><span class="br-label">Zakatable wealth</span><span class="br-val">S$50,000</span></div>
           <div class="breakdown-row"><span class="br-label">Zakat rate</span><span class="br-val">2.5%</span></div>
-          <div class="breakdown-row" style="font-weight:700;border-top:1px solid var(--border);padding-top:8px"><span class="br-label" style="color:var(--text-primary)">Total due</span><span class="br-val" style="color:var(--green)">$1,250</span></div>
+          <div class="breakdown-row" style="font-weight:700;border-top:1px solid var(--border);padding-top:8px"><span class="br-label" style="color:var(--text-primary)">Total due</span><span class="br-val" style="color:var(--green)">S$1,250</span></div>
         </div>
+        <div class="attribution-text">Gold &amp; silver prices by gold-api.com · Exchange rates by ExchangeRate-API</div>
       </div>
     </div>
   </div>
@@ -1159,32 +1442,36 @@
   <div class="screen-label">09 — Profile &amp; Settings</div>
   <div class="screen">
     <div class="topnav">
-      <div class="topnav-logo">☽</div>
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
       <span class="topnav-name">NoorAI</span>
       <span class="topnav-arabic">نور</span>
       <div class="topnav-links">
         <div class="topnav-link">Dashboard</div>
         <div class="topnav-link">Prayers</div>
         <div class="topnav-link">AI Chat</div>
-        <div class="topnav-link">Duas</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link">Quran</div>
         <div class="topnav-link">Zakat</div>
       </div>
       <div class="topnav-right">
-        <div class="topnav-icon">🔔</div>
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
         <div class="topnav-avatar" style="background:var(--gold);font-weight:700">AH</div>
       </div>
     </div>
     <div class="profile-body">
       <div class="dash-sidebar">
         <div class="sidebar-section">Main</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🏠</span>Dashboard</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🕌</span>Prayer Tracker</div>
-        <div class="sidebar-item"><span class="sidebar-icon">🤖</span>AI Chatbot</div>
-        <div class="sidebar-item"><span class="sidebar-icon">📖</span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
         <div class="sidebar-section">Account</div>
-        <div class="sidebar-item active"><span class="sidebar-icon">👤</span>Profile</div>
-        <div class="sidebar-item"><span class="sidebar-icon">⚙️</span>Settings</div>
-        <div class="sidebar-item" style="margin-top:auto;color:#EF4444"><span class="sidebar-icon">🚪</span>Sign out</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profile</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>Settings</div>
+        <div class="sidebar-item" style="margin-top:auto;color:#EF4444"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg></span>Sign out</div>
       </div>
       <div class="profile-main">
         <div class="profile-hero">
@@ -1193,7 +1480,7 @@
             <h2>Ahmad Hassan</h2>
             <p>ahmad.hassan@email.com · Member since January 2026</p>
             <div style="display:flex;gap:8px;margin-top:10px">
-              <span class="badge badge-gold">🔥 14-day streak</span>
+              <span class="badge badge-gold"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg> 14-day streak</span>
               <span class="badge" style="background:rgba(255,255,255,.2);color:#fff">Singapore, SG</span>
             </div>
           </div>
@@ -1209,7 +1496,8 @@
             <div class="settings-row"><div><div class="settings-row-label">Full name</div><div class="settings-row-sub">Ahmad Hassan</div></div><button class="btn btn-ghost btn-sm">Edit</button></div>
             <div class="settings-row"><div><div class="settings-row-label">Email</div><div class="settings-row-sub">ahmad.hassan@email.com</div></div><button class="btn btn-ghost btn-sm">Edit</button></div>
             <div class="settings-row"><div><div class="settings-row-label">Location</div><div class="settings-row-sub">Singapore, SG</div></div><button class="btn btn-ghost btn-sm">Edit</button></div>
-            <div class="settings-row"><div><div class="settings-row-label">Madhab</div><div class="settings-row-sub">Shafi'i</div></div><select class="select-field"><option>Shafi'i</option><option>Hanafi</option><option>Maliki</option><option>Hanbali</option></select></div>
+            <div class="settings-row"><div><div class="settings-row-label">Madhab</div><div class="settings-row-sub">Affects your Asr prayer time</div></div><select class="select-field"><option>Hanafi</option><option selected>Shafi'i</option><option>Maliki</option><option>Hanbali</option><option>Ja'fari</option></select></div>
+            <div class="settings-row"><div><div class="settings-row-label">Preferred currency</div><div class="settings-row-sub">Used across Zakat and pricing</div></div><select class="select-field"><option>USD ($)</option><option selected>SGD (S$)</option><option>GBP (&pound;)</option><option>EUR (&euro;)</option><option>PKR (&#8360;)</option><option>MYR (RM)</option><option>INR (&#8377;)</option><option>AED (&#1583;.&#1573;)</option><option>SAR (&#65020;)</option></select></div>
           </div>
           <div class="card settings-card">
             <h4>Notifications</h4>
@@ -1221,7 +1509,6 @@
             <h4>Appearance</h4>
             <div class="settings-row"><div><div class="settings-row-label">Dark mode</div><div class="settings-row-sub">Switch to dark theme</div></div><div class="toggle off"></div></div>
             <div class="settings-row"><div><div class="settings-row-label">Language</div><div class="settings-row-sub">App display language</div></div><select class="select-field"><option>English</option><option>Arabic</option><option>Malay</option></select></div>
-            <div class="settings-row"><div><div class="settings-row-label">Prayer calculation</div><div class="settings-row-sub">Method used for prayer times</div></div><select class="select-field"><option>MUIS</option><option>MWL</option><option>ISNA</option></select></div>
           </div>
           <div class="card settings-card">
             <h4>Privacy &amp; Security</h4>
@@ -1230,6 +1517,118 @@
             <div class="settings-row"><div><div class="settings-row-label">Export my data</div><div class="settings-row-sub">Download all your prayer history</div></div><button class="btn btn-ghost btn-sm">Export</button></div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 10 — SURAH BROWSER
+══════════════════════════════════════ -->
+<div>
+  <div class="screen-label">10 — Surah Browser</div>
+  <div class="screen">
+    <div class="topnav">
+      <div class="topnav-logo"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg></div>
+      <span class="topnav-name">NoorAI</span>
+      <span class="topnav-arabic">نور</span>
+      <div class="topnav-links">
+        <div class="topnav-link">Dashboard</div>
+        <div class="topnav-link">Prayers</div>
+        <div class="topnav-link">AI Chat</div>
+        <div class="topnav-link">Dua Finder</div>
+        <div class="topnav-link">Surah Finder</div>
+        <div class="topnav-link active">Quran</div>
+        <div class="topnav-link">Zakat</div>
+      </div>
+      <div class="topnav-right">
+        <div class="topnav-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg></div>
+        <div class="topnav-avatar">AH</div>
+      </div>
+    </div>
+    <div class="finder-page-body">
+      <div class="dash-sidebar">
+        <div class="sidebar-section">Main</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>Dashboard</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10 18v-7"/><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/></svg></span>Prayer Tracker</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span>AI Chatbot</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span>Dua Finder</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Surah Finder</div>
+        <div class="sidebar-item active"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg></span>Quran</div>
+        <div class="sidebar-section">Tools</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>Prayer Times</div>
+        <div class="sidebar-item"><span class="sidebar-icon"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg></span>Zakat Calculator</div>
+      </div>
+      <div class="browser-body">
+      <div class="browser-header">
+        <h2>Quran</h2>
+        <p>114 Surahs</p>
+      </div>
+      <div class="surah-search-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        <input type="text" placeholder="Search surahs…" />
+      </div>
+      <div class="card browser-list">
+        <div class="browser-row">
+          <div class="browser-num">1</div>
+          <div class="browser-names">
+            <div class="browser-name-ar">الفاتحة</div>
+            <div class="browser-name-en">Al-Fatiha</div>
+          </div>
+          <div class="browser-ayahs">7 ayahs</div>
+          <div class="revelation-badge meccan">Meccan</div>
+          <svg class="browser-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="browser-row">
+          <div class="browser-num">2</div>
+          <div class="browser-names">
+            <div class="browser-name-ar">البقرة</div>
+            <div class="browser-name-en">Al-Baqarah</div>
+          </div>
+          <div class="browser-ayahs">286 ayahs</div>
+          <div class="revelation-badge medinan">Medinan</div>
+          <svg class="browser-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="browser-row">
+          <div class="browser-num">3</div>
+          <div class="browser-names">
+            <div class="browser-name-ar">آل عمران</div>
+            <div class="browser-name-en">Ali 'Imran</div>
+          </div>
+          <div class="browser-ayahs">200 ayahs</div>
+          <div class="revelation-badge medinan">Medinan</div>
+          <svg class="browser-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="browser-row">
+          <div class="browser-num">…</div>
+          <div class="browser-names">
+            <div class="browser-name-en" style="color:var(--text-light)">111 more surahs</div>
+          </div>
+          <div class="browser-ayahs"></div>
+          <div style="width:76px"></div>
+          <div style="width:18px"></div>
+        </div>
+        <div class="browser-row">
+          <div class="browser-num">94</div>
+          <div class="browser-names">
+            <div class="browser-name-ar">الشرح</div>
+            <div class="browser-name-en">Ash-Sharh</div>
+          </div>
+          <div class="browser-ayahs">8 ayahs</div>
+          <div class="revelation-badge meccan">Meccan</div>
+          <svg class="browser-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+        <div class="browser-row">
+          <div class="browser-num">114</div>
+          <div class="browser-names">
+            <div class="browser-name-ar">الناس</div>
+            <div class="browser-name-en">An-Nas</div>
+          </div>
+          <div class="browser-ayahs">6 ayahs</div>
+          <div class="revelation-badge meccan">Meccan</div>
+          <svg class="browser-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </div>
+      </div>
       </div>
     </div>
   </div>
