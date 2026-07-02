@@ -5,12 +5,30 @@ Chat schemas.
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
+from app.data.security_patterns import INJECTION_PATTERNS
+
+
+#----------- User Query Length for AI -----------------------#
+MAX_QUESTION_LENGTH = 1000
 
 
 class ChatMessageCreate(BaseModel):
     question: str
     session_id: uuid.UUID | None = None
+
+    @field_validator("question")
+    @classmethod
+    def validate_question(cls, value: str) -> str:
+        if len(value) > MAX_QUESTION_LENGTH:
+            raise ValueError(f"question must be {MAX_QUESTION_LENGTH} characters or fewer")
+
+        lowered = value.lower()
+        for pattern in INJECTION_PATTERNS:
+            if pattern in lowered:
+                raise ValueError("question could not be processed")
+
+        return value
 
 
 class ChatMessageRead(BaseModel):
