@@ -147,3 +147,48 @@ async def test_send_message_rejects_overlong_question(client):
         json={"question": "a" * 1001},
     )
     assert response.status_code == 422
+
+
+def _fake_ask_stream(question, user=None, history=None):
+    yield {"type": "token", "content": "Hello "}
+    yield {"type": "token", "content": "world"}
+    yield {
+        "type": "done",
+        "sources": [{"source_file": "Test Source", "similarity": 0.8}],
+        "tools_used": ["search_duas"],
+    }
+
+
+async def test_send_message_stream_anonymous(client):
+    with patch("app.api.chat.ask_stream", side_effect=_fake_ask_stream):
+        async with client.stream(
+            "POST",
+            "/chat/message/stream",
+            json={"question": "What is the dua for anxiety?"},
+        ) as response:
+            assert response.status_code == 200
+            body = ""
+            async for chunk in response.aiter_text():
+                body += chunk
+
+    assert '"token": "Hello "' in body
+    assert '"token": "world"' in body
+    assert '"done": true' in body
+
+
+async def test_send_message_stream_authenticated_persists_message(client, unique_email):
+    token = await _register_and_get_token(client, unique_email)
+
+    with patch("app.api.chat.ask_stream", side_effect=_fake_ask_stream):
+        async with client.stream(
+            "POST",
+            "/chat/message/stream",
+            headers={"Authorization": f"Bearer {token}"},
+            json={"question": "What is the dua for anxiety?"},
+        ) as response:
+            async for _ in response.aiter_text():
+                pass
+
+    sessions = await client.get("/chat/sessions", headers={"Authorization": f"Bearer {token}"})
+    assert len(sessions.json()) == 1
+    assert sessions.json()[0]["message_count"] == 2
