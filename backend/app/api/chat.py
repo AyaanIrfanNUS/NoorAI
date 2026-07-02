@@ -235,7 +235,9 @@ async def send_message_stream(
 
 
 @router.get("/sessions", response_model=list[ChatSessionListItem])
+@limiter.limit("30/minute")
 async def list_sessions(
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
@@ -278,7 +280,9 @@ async def list_sessions(
 
 
 @router.get("/sessions/{session_id}/messages", response_model=list[ChatMessageRead])
+@limiter.limit("30/minute")
 async def get_session_messages(
+    request: Request,
     session_id: uuid.UUID,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
@@ -302,7 +306,9 @@ async def get_session_messages(
 
 
 @router.delete("/sessions/{session_id}", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("20/minute")
 async def delete_session(
+    request: Request,
     session_id: uuid.UUID,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
