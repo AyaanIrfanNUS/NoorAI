@@ -5,11 +5,30 @@ Chat schemas.
 import uuid
 from datetime import datetime
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
+from app.data.security_patterns import INJECTION_PATTERNS
+
+
+#----------- User Query Length for AI -----------------------#
+MAX_QUESTION_LENGTH = 1000
 
 
 class ChatMessageCreate(BaseModel):
-    content: str
+    question: str
+    session_id: uuid.UUID | None = None
+
+    @field_validator("question")
+    @classmethod
+    def validate_question(cls, value: str) -> str:
+        if len(value) > MAX_QUESTION_LENGTH:
+            raise ValueError(f"question must be {MAX_QUESTION_LENGTH} characters or fewer")
+
+        lowered = value.lower()
+        for pattern in INJECTION_PATTERNS:
+            if pattern in lowered:
+                raise ValueError("question could not be processed")
+
+        return value
 
 
 class ChatMessageRead(BaseModel):
@@ -23,6 +42,17 @@ class ChatMessageRead(BaseModel):
     created_at: datetime
 
 
+class ChatResponse(BaseModel):
+    """
+    Shape returned by POST /chat/message for both anonymous and 
+    authenticated users; session_id is None for anonymous requests.
+    """
+    answer: str
+    sources: list[dict]
+    tools_used: list[str]
+    session_id: uuid.UUID | None = None
+
+
 class ChatSessionRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -31,3 +61,18 @@ class ChatSessionRead(BaseModel):
     title: str
     created_at: datetime
     updated_at: datetime
+
+
+class ChatSessionListItem(BaseModel):
+    """
+    Summary shape for GET /chat/sessions, includes derived 
+    fields not present on the ChatSession model itself.
+    """
+    model_config = ConfigDict(from_attributes=True)
+
+    id: uuid.UUID
+    title: str
+    created_at: datetime
+    updated_at: datetime
+    message_count: int
+    last_message_preview: str | None = None
