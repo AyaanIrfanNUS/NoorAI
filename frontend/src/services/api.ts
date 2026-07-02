@@ -5,10 +5,7 @@
  * automatic token refresh on 401 responses. If a refresh also fails,
  * clears auth state and forces a redirect to login.
  */
-
-
-
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import { useAuthStore } from "../stores/auth_store";
 
 const API_URL = import.meta.env.VITE_API_URL;
