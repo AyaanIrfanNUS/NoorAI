@@ -18,6 +18,7 @@ from app.core.limiter import limiter
 from app.core.config import settings
 from app.core.middleware import SecurityHeadersMiddleware
 import sentry_sdk
+from app.api import finder
 
 
 @asynccontextmanager
@@ -95,6 +96,7 @@ app.include_router(zakat.router)
 app.include_router(users.router)
 app.include_router(prayer_times.router)
 app.include_router(chat.router)
+app.include_router(finder.router)
 
 
 @app.get("/health")

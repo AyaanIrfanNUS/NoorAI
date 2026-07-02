@@ -35,6 +35,8 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 SESSION_TITLE_MAX_LENGTH = 50
 
 # Number of prior messages included as conversation context in each request.
+# Capped at 10 messages: comfortably within the model's context window even
+# at max-length responses, without needing explicit token counting/truncation.
 HISTORY_WINDOW = 10
 
 
